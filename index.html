@@ -99,7 +99,7 @@ padding: 20px;
                 question: "The full form of CSS is:",
                 options: ["Cascading Style Sheets", "Coloured Special Sheets", "Color and Style Sheets", "None of the above"],
                 correct: 0,
-                background: "url('https://i.ibb.co/PmKqYc4/16ffa45e-6889-4bc0-ad61-a659dba5e322.jpg')"  // background image for this question
+                background  : "url('https://i.ibb.co/PmKqYc4/16ffa45e-6889-4bc0-ad61-a659dba5e322.jpg')"  // background image for this question
             },
             {
                 question: "Which planet is known as the Red Planet?",
@@ -187,6 +187,7 @@ nextButton.style.display = 'block';
         }
 
         function displayResults() {
+            background : "url('https://images.app.goo.gl/JttjNpPavq6fZquH6')"
             const quizElement = document.getElementById('quiz');
             let resultHTML = `<h2>You've completed the quiz!</h2>`;
             resultHTML += `<p>Correct Answers: ${correctAnswers}</p>`;
