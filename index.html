@@ -187,7 +187,6 @@ nextButton.style.display = 'block';
         }
 
         function displayResults() {
-         element.style.backgroundImage ="url('https://images.app.goo.gl/JttjNpPavq6fZquH6')";
             const quizElement = document.getElementById('quiz');
             let resultHTML = `<h2>You've completed the quiz!</h2>`;
             resultHTML += `<p>Correct Answers: ${correctAnswers}</p>`;
@@ -203,7 +202,7 @@ reviewIncorrect.forEach((item) => {
             }
 
             quizElement.innerHTML = resultHTML;
-            document.body.style.backgroundImage = "url('final-background.jpg')";  // Final background image
+            document.body.style.backgroundImage = "url('https://images.app.goo.gl/JttjNpPavq6fZquH6')";  // Final background image
         }
 
         window.onload = loadQuestion;
