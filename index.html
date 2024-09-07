@@ -17,35 +17,70 @@
             transition: background-image 0.5s ease-in-out;
         }
 
-        .quiz-container {
-            background-color: rgba(255, 255, 255, 0.9);
+        .welcome-screen {
+            background-image: url('https://wallpaperaccess.com/full/2384080.jpg'); /* Set your background image here */
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 100vh; /* Full height */
+            width: 100%;
+            color: rgb(181, 0, 0);
+            padding: 20px;
+            box-sizing: border-box;
+        }
 
-padding: 20px;
+        .welcome-screen h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .welcome-screen button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .welcome-screen button:hover {
+            background-color: #0056b3;
+        }
+
+        .quiz-container, .result-container {
+            background-color: rgba(156, 217, 227, 0.9);
+            padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 300px;
+            width: 90%;
+            max-width: 500px;
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         #options {
             list-style: none;
             padding: 0;
+            margin: 0;
+            width: 100%;
         }
 
         #options li {
             padding: 10px;
             margin: 5px 0;
-            background-color: #f0f0f0;
+            background-color: #fdff74;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s;
         }
 
         #options li:hover {
-            background-color: #ddd;
-        }
-
-#options li:hover {
             background-color: #ddd;
         }
 
@@ -57,7 +92,7 @@ padding: 20px;
             background-color: #ffcdd2;
         }
 
-        #next-btn {
+        #next-btn, #start-again-btn {
             margin-top: 20px;
             padding: 10px 20px;
             background-color: #007bff;
@@ -65,70 +100,211 @@ padding: 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            display: none;
         }
 
-        #next-btn:hover {
+        #next-btn:hover, #start-again-btn:hover {
             background-color: #0056b3;
         }
 
-#feedback {
+        #feedback {
             margin-top: 20px;
             font-weight: bold;
+        }
+
+        .result-container {
+            background-image: url('result-background.jpg');
+            background-size: cover;
+            background-position: center;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Full height */
+            width: 100%;
         }
     </style>
 </head>
 <body>
-    <div class="quiz-container">
+    <div class="welcome-screen" id="welcome-screen">
+        <div>
+            <h1>Welcome to the Interactive Quiz!</h1>
+            <button id="start-btn" onclick="startQuiz()">Start Quiz</button>
+        </div>
+    </div>
+    <div class="quiz-container" id="quiz-container" style="display: none;">
         <h1>Quiz</h1>
         <div id="quiz">
-            <div class="question-container">
-                <p id="question"></p>
-                <ul id="options">
-                    <!-- Options will be dynamically added here -->
-                </ul>
-            </div>
+            <p id="question"></p>
+            <ul id="options">
+                <!-- Options will be dynamically added here -->
+            </ul>
             <div id="feedback"></div>
             <button id="next-btn" onclick="loadNextQuestion()">Next Question</button>
         </div>
     </div>
 
- <script>
-        const questions = [
+    <div class="result-container" id="result-container" style="display: none;">
+        <div>
+            <h2>You've completed the quiz!</h2>
+            <p><strong> Correct Answers:</strong> Correct Answers: <span id="correct-answers"></span></p>
+            <p><strong> Incorrect Answers: </strong><span id="incorrect-answers"></span></p>
+            <div id="incorrect-answers-list"></div>
+            <button id="start-again-btn" onclick="restartQuiz()">Start Quiz Again</button>
+        </div>
+    </div>
+
+    <script>
+        const allQuestions = [
             {
                 question: "The full form of CSS is:",
                 options: ["Cascading Style Sheets", "Coloured Special Sheets", "Color and Style Sheets", "None of the above"],
                 correct: 0,
-                background: "url('https://i.ibb.co/PmKqYc4/16ffa45e-6889-4bc0-ad61-a659dba5e322.jpg')"  // background image for this question
+                background: "url('https://th.bing.com/th/id/OIP.ngED45ixTRK5QACHEcv6-AAAAA?w=416&h=416&rs=1&pid=ImgDetMain')"
             },
             {
                 question: "Which planet is known as the Red Planet?",
                 options: ["Earth", "Mars", "Jupiter", "Saturn"],
                 correct: 1,
-                background: "url('https://i.ibb.co/s9mMBhH/4d043c9e-dbdc-49a6-9c78-79113def1fe7.jpg')"  // background image for this question
+                background: "url('https://th.bing.com/th/id/OIP.ngED45ixTRK5QACHEcv6-AAAAA?w=416&h=416&rs=1&pid=ImgDetMain')"
             },
             {
-
-question: "What is the official affiliation of MIT Polytechnic Chh.Sambhajinagar?",
+                question: "What is the official affiliation of MIT Polytechnic Chh.Sambhajinagar?",
                 options: ["AICTE", "UGC", "MSBTE", "AIU"],
                 correct: 2,
-                background: "url('https://i.ibb.co/TMRR4C6/161449df-bb8d-48f3-a460-476cd7105d1e.jpg')"  // background image for this question
+                background: "url('https://th.bing.com/th/id/OIP.ngED45ixTRK5QACHEcv6-AAAAA?w=416&h=416&rs=1&pid=ImgDetMain')"
+            },
+            // Additional Questions
+            {
+                question: "What does AJP stand for in technology?",
+                options: ["Asynchronous Java Protocol", "Advanced Java Platform", "Association of Java Programmers", "None of the above"],
+                correct: 1,
+                background: "url('https://th.bing.com/th/id/OIP.ngED45ixTRK5QACHEcv6-AAAAA?w=416&h=416&rs=1&pid=ImgDetMain')"
+            },
+            {
+                question: "Which Indian leader was known for the 'Salt March'?",
+                options: ["Mahatma Gandhi", "Jawaharlal Nehru", "Subhas Chandra Bose", "Bhagat Singh"],
+                correct: 0,
+                background: "url('https://th.bing.com/th/id/OIP.ngED45ixTRK5QACHEcv6-AAAAA?w=416&h=416&rs=1&pid=ImgDetMain')"
+            },
+            {
+                question: "What is the capital city of India?",
+                options: ["Mumbai", "Delhi", "Kolkata", "Chennai"],
+                correct: 1,
+                background: "url('https://th.bing.com/th/id/OIP.ngED45ixTRK5QACHEcv6-AAAAA?w=416&h=416&rs=1&pid=ImgDetMain')"
+            },
+            {
+                question: "Which language is primarily used for web development?",
+                options: ["JavaScript", "Python", "C++", "Java"],
+                correct: 0,
+                background: "url('https://th.bing.com/th/id/OIP.ngED45ixTRK5QACHEcv6-AAAAA?w=416&h=416&rs=1&pid=ImgDetMain')"
+            },
+            {
+                question: "In which year did India gain independence from British rule?",
+                options: ["1942", "1947", "1950", "1952"],
+                correct: 1,
+                background: "url('https://th.bing.com/th/id/OIP.ngED45ixTRK5QACHEcv6-AAAAA?w=416&h=416&rs=1&pid=ImgDetMain')"
+            },
+            {
+                question: "Which is the largest state in India by area?",
+                options: ["Madhya Pradesh", "Rajasthan", "Uttar Pradesh", "Maharashtra"],
+                correct: 1,
+                background: "url('https://th.bing.com/th/id/OIP.ngED45ixTRK5QACHEcv6-AAAAA?w=416&h=416&rs=1&pid=ImgDetMain')"
+            },
+            {
+                question: "Who wrote the 'Azaadi Ka Amrit Mahotsav'?",
+                options: ["Rabindranath Tagore", "Mahatma Gandhi", "Jawaharlal Nehru", "Sardar Patel"],
+                correct: 1,
+                background: "url('https://th.bing.com/th/id/OIP.ngED45ixTRK5QACHEcv6-AAAAA?w=416&h=416&rs=1&pid=ImgDetMain')"
+            },
+            {
+                question: "What is the full form of HTML?",
+                options: ["HyperText Markup Language", "HyperText Machine Language", "HighText Markup Language", "None of the above"],
+                correct: 0,
+                background: "url('https://th.bing.com/th/id/OIP.ngED45ixTRK5QACHEcv6-AAAAA?w=416&h=416&rs=1&pid=ImgDetMain')"
+            },
+            {
+                question: "Who is known as the 'Iron Man of India'?",
+                options: ["Jawaharlal Nehru", "Subhas Chandra Bose", "Mahatma Gandhi", "Sardar Vallabhbhai Patel"],
+                correct: 3,
+                background: "url('https://th.bing.com/th/id/OIP.ngED45ixTRK5QACHEcv6-AAAAA?w=416&h=416&rs=1&pid=ImgDetMain')"
+            },
+            {
+                question: "What is the national sport of India?",
+                options: ["Cricket", "Hockey", "Football", "Kabaddi"],
+                correct: 1,
+                background: "url('https://th.bing.com/th/id/OIP.ngED45ixTRK5QACHEcv6-AAAAA?w=416&h=416&rs=1&pid=ImgDetMain')"
+            },
+            {
+                question: "Which element has the chemical symbol 'Au'?",
+                options: ["Gold", "Silver", "Copper", "Iron"],
+                correct: 0,
+                background: "url('https://th.bing.com/th/id/OIP.ngED45ixTRK5QACHEcv6-AAAAA?w=416&h=416&rs=1&pid=ImgDetMain')"
+            },
+            {
+                question: "What is the currency of Japan?",
+                options: ["Yuan", "Won", "Dollar", "Yen"],
+                correct: 3,
+                background: "url('https://th.bing.com/th/id/OIP.ngED45ixTRK5QACHEcv6-AAAAA?w=416&h=416&rs=1&pid=ImgDetMain)"
+            },
+            {
+                question: "Which planet is known as the 'Blue Planet'?",
+                options: ["Earth", "Neptune", "Uranus", "Venus"],
+                correct: 0,
+                background: "url('https://th.bing.com/th/id/OIP.ngED45ixTRK5QACHEcv6-AAAAA?w=416&h=416&rs=1&pid=ImgDetMain')"
+            },
+            {
+                question: "Who is known as the 'Father of the Nation' in India?",
+                options: ["Jawaharlal Nehru", "Mahatma Gandhi", "Subhas Chandra Bose", "Bhagat Singh"],
+                correct: 1,
+                background: "url('https://th.bing.com/th/id/OIP.ngED45ixTRK5QACHEcv6-AAAAA?w=416&h=416&rs=1&pid=ImgDetMain')"
+            },
+            {
+                question: "What is the main function of the CPU in a computer?",
+                options: ["Store data", "Process instructions", "Connect to the internet", "Manage power"],
+                correct: 1,
+                background: "url('https://th.bing.com/th/id/OIP.ngED45ixTRK5QACHEcv6-AAAAA?w=416&h=416&rs=1&pid=ImgDetMain')"
+            },
+            {
+                question: "Which programming language is known as the 'mother of all languages'?",
+                options: ["Java", "C", "Python", "C++"],
+                correct: 1,
+                background: "url('https://th.bing.com/th/id/OIP.ngED45ixTRK5QACHEcv6-AAAAA?w=416&h=416&rs=1&pid=ImgDetMain')"
             }
         ];
 
+        let questions = [];
         let currentQuestion = 0;
         let correctAnswers = 0;
         let incorrectAnswers = 0;
         let reviewIncorrect = [];
+
+        function startQuiz() {
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('quiz-container').style.display = 'block';
+            selectRandomQuestions();
+            loadQuestion();
+        }
+
+        function selectRandomQuestions() {
+            let selected = [];
+            while (selected.length < 5) {
+                let question = allQuestions[Math.floor(Math.random() * allQuestions.length)];
+                if (!selected.includes(question)) {
+                    selected.push(question);
+                }
+            }
+            questions = selected;
+        }
 
         function loadQuestion() {
             const questionElement = document.getElementById('question');
             const optionsElement = document.getElementById('options');
             const nextButton = document.getElementById('next-btn');
             const feedbackElement = document.getElementById('feedback');
-            const current = 
-
-questions[currentQuestion];
+            const current = questions[currentQuestion];
 
             questionElement.textContent = current.question;
             optionsElement.innerHTML = '';
@@ -143,7 +319,7 @@ questions[currentQuestion];
                 optionsElement.appendChild(li);
             });
 
-nextButton.style.display = 'none';
+            nextButton.style.display = 'none';
         }
 
         function evaluateAnswer(selectedIndex, element) {
@@ -158,8 +334,7 @@ nextButton.style.display = 'none';
                 feedbackElement.style.color = "green";
             } else {
                 element.classList.add('incorrect');
-
-document.querySelector(`li[data-index="${correctIndex}"]`).classList.add('correct');
+                document.querySelector(`li[data-index="${correctIndex}"]`).classList.add('correct');
                 incorrectAnswers++;
                 feedbackElement.innerHTML = `Incorrect! The correct answer is "${questions[currentQuestion].options[correctIndex]}".`;
                 feedbackElement.style.color = "red";
@@ -174,7 +349,7 @@ document.querySelector(`li[data-index="${correctIndex}"]`).classList.add('correc
                 li.style.pointerEvents = 'none';
             });
 
-nextButton.style.display = 'block';
+            nextButton.style.display = 'block';
         }
 
         function loadNextQuestion() {
@@ -187,25 +362,38 @@ nextButton.style.display = 'block';
         }
 
         function displayResults() {
-            const quizElement = document.getElementById('quiz');
+            const resultContainer = document.getElementById('result-container');
+            const correctAnswersElement = document.getElementById('correct-answers');
+            const incorrectAnswersElement = document.getElementById('incorrect-answers');
+            const incorrectAnswersList = document.getElementById('incorrect-answers-list');
+
             let resultHTML = `<h2>You've completed the quiz!</h2>`;
-            resultHTML += `<p>Correct Answers: ${correctAnswers}</p>`;
-            resultHTML += `<p>Incorrect Answers: ${incorrectAnswers}</p>`;
+            correctAnswersElement.textContent = correctAnswers;
+            incorrectAnswersElement.textContent = incorrectAnswers;
 
             if (reviewIncorrect.length > 0) {
-                resultHTML += `<h3>Review of Incorrect Answers:</h3><ul>`;
-
-reviewIncorrect.forEach((item) => {
-                    resultHTML += `<li><strong>Question:</strong> ${item.question}<br><strong>Your Answer:</strong> ${item.yourAnswer}<br><strong>Correct Answer:</strong> ${item.correctAnswer}</li>`;
+                let reviewHTML = `<h3>Review of Incorrect Answers:</h3><ul>`;
+                reviewIncorrect.forEach((item) => {
+                    reviewHTML += `<li><strong>Question:</strong> ${item.question}<br><strong>Your Answer:</strong> ${item.yourAnswer}<br><strong>Correct Answer:</strong> ${item.correctAnswer}</li>`;
                 });
-                resultHTML += `</ul>`;
+                reviewHTML += `</ul>`;
+                incorrectAnswersList.innerHTML = reviewHTML;
             }
 
-            quizElement.innerHTML = resultHTML;
-            document.body.style.backgroundImage = "url('final-background.jpg')";  // Final background image
+            resultContainer.style.display = 'flex';
+            document.getElementById('quiz-container').style.display = 'none';
+            document.body.style.backgroundImage = "url('result-background.jpg')";  // Final background image
         }
 
-        window.onload = loadQuestion;
+        function restartQuiz() {
+            currentQuestion = 0;
+            correctAnswers = 0;
+            incorrectAnswers = 0;
+            reviewIncorrect = [];
+            document.getElementById('result-container').style.display = 'none';
+            document.getElementById('welcome-screen').style.display = 'block';
+            document.body.style.backgroundImage = "none";  // Remove background image for result screen
+        }
     </script>
 </body>
 </html>
