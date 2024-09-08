@@ -1,399 +1,311 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Quiz</title>
+    <title>Car Connect</title>
     <style>
+        /* Global Styles */
         body {
-            font-family: Arial, sans-serif;
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             margin: 0;
-            transition: background-image 0.5s ease-in-out;
-        }
-
-        .welcome-screen {
-            background-image: url('https://wallpaperaccess.com/thumb/937199.jpg'); /* Set your background image here */
+            font-family: Arial, sans-serif;
+            color: #333;
+            background: url('background.jpg') no-repeat center center fixed;
             background-size: cover;
-            background-position: center;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        }
+
+        header {
+            background-color: rgba(51, 51, 51, 0.8);
+            color: #fff;
+            padding: 15px;
             text-align: center;
-            height: 100vh; /* Full height */
-            width: 100%;
-            color: rgb(255, 255, 255);
-            padding: 20px;
-            box-sizing: border-box;
         }
 
-        .welcome-screen h1 {
-            font-size: 2rem;
-            margin-bottom: 20px;
+        header h1 {
+            margin: 0;
+            font-size: 2em;
         }
 
-        .welcome-screen button {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-
-        .welcome-screen button:hover {
-            background-color: #0056b3;
-        }
-
-        .quiz-container, .result-container {
-            background-color:  rgba(255, 255, 255, 0.9);
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 90%;
-            max-width: 500px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        #options {
+        nav ul {
             list-style: none;
             padding: 0;
-            margin: 0;
-            width: 100%;
+            margin: 10px 0 0;
         }
 
-        #options li {
-            padding: 10px;
-            margin: 5px 0;
-            background-color: #f0f0f0;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
+        nav ul li {
+            display: inline;
+            margin: 0 10px;
         }
 
-        #options li:hover {
-            background-color: #ddd;
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.2em;
         }
-
-        .correct {
-            background-color: #c8e6c9;
-        }
-
-        .incorrect {
-            background-color: #ffcdd2;
-        }
-
-        #next-btn, #start-again-btn {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        #next-btn:hover, #start-again-btn:hover {
-            background-color: #0056b3;
-        }
-
-        #feedback {
-            margin-top: 20px;
-            font-weight: bold;
-        }
-
-        .result-container {
-            background-image: url('result-background.jpg');
-            background-size: cover;
-            background-position: center;
-            padding: 20px;
-            border-radius: 8px;
+        .hero {
+            background-color: rgba(248, 248, 248, 0.8);
+            padding: 40px;
             text-align: center;
+        }
+
+        .hero h2 {
+            margin: 0;
+            font-size: 2em;
+        }
+
+        .info {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            margin: 20px;
+            border-radius: 8px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+
+        form {
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh; /* Full height */
-            width: 100%;
+        }
+
+        form label {
+            margin: 10px 0 5px;
+        }
+
+        form input, form select {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        form input[type="file"] {
+            border: none;
+        }
+
+        footer {
+            background-color: rgba(51, 51, 51, 0.8);
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .car-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            background: #fff;
+        }
+
+        .car-card img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+        }
+
+        .car-card h3 {
+            margin: 10px 0 5px;
+        }
+
+        .car-card p {
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.5em;
+            }
+
+            nav ul li {
+                display: block;
+                margin: 5px 0;
+            }
+
+            .hero h2 {
+                font-size: 1.5em;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="welcome-screen" id="welcome-screen">
-        <div>
-            <h1>Welcome to the Interactive Quiz!</h1>
-            <button id="start-btn" onclick="startQuiz()">Start Quiz</button>
+    <header>
+        <div class="container">
+            <h1>Car Connect</h1>
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#buy">Buy a Car</a></li>
+                    <li><a href="#sell">Sell a Car</a></li>
+                    <li><a href="#contact">Contact Us</a></li>
+                </ul>
+            </nav>
         </div>
-    </div>
-    <div class="quiz-container" id="quiz-container" style="display: none;">
-        <h1>Quiz</h1>
-        <div id="quiz">
-            <p id="question"></p>
-            <ul id="options">
-                <!-- Options will be dynamically added here -->
-            </ul>
-            <div id="feedback"></div>
-            <button id="next-btn" onclick="loadNextQuestion()">Next Question</button>
-        </div>
-    </div>
+    </header>
+    <main>
+        <section id="home" class="hero">
+            <h2>Welcome to Car Connect</h2>
+            <p>Your go-to platform for buying and selling cars.</p>
+        </section>
+        <section id="buy" class="info">
+            <div class="container">
+                <h2>Buy a Car</h2>
+                <p>Explore our extensive list of second-hand cars for sale.</p>
+                <button id="viewCarsBtn">View Cars</button>
+                <div id="carsList" class="hidden">
+                    <!-- Existing cars for sale -->
+                    <div class="car-card">
+                        <img src="https://i.ibb.co/pxpMrkH/IMG-7799.jpg" alt="Mahindra XUV700">
+                        <h3>Mahindra XUV700</h3>
+                        <p><strong>Price:</strong> ₹20,00,000</p>                        
+                        <p><strong>Owner Name:</strong> Amit Singh</p>
+                        <p><strong>Contact:</strong> 9988776655</p>
+                        <p><strong>Registration Number:</strong> MH01AB1234</p>
+                        <p><strong>Location:</strong> Mumbai </p>
+                    </div>
 
-    <div class="result-container" id="result-container" style="display: none;">
-        <div>
-            <h2>You've completed the quiz!</h2>
-            <p><strong> Correct Answers:</strong> Correct Answers: <span id="correct-answers"></span></p>
-            <p><strong> Incorrect Answers: </strong><span id="incorrect-answers"></span></p>
-            <div id="incorrect-answers-list"></div>
-            <button id="start-again-btn" onclick="restartQuiz()">Start Quiz Again</button>
+ <div class="car-card">
+                       <img src="https://i.ibb.co/ZzPnxKg/IMG-7798.jpg" alt="IMG-7798">
+                        <h3>Hyundai Creta</h3>
+                       <p><strong>Price:</strong> ₹15,00,000</p>                    
+<p><strong>Owner Name:</strong> Rajesh Sharma </p><p><strong>Contact</strong> 9876543210</p>
+<p><strong>Registration Number:</strong> MH20AK1294</p>
+                        <p><strong>Location:</strong> Chh.Sambhajinagar </p>
+                    </div>
+                    <div class="car-card">
+                       <img src="https://i.ibb.co/L1y7Tg9/IMG-7796.jpg" alt="IMG-7796">
+                    <h3>Land Rover Defender</h3>
+<p><strong>Price:</strong> ₹30,00,000</p>                       
+<p><strong>Owner Name:</strong> Rohit Yadav </p><p><strong>Contact</strong> 1199882238</p>
+<p><strong>Registration Number:</strong> MH18DU1298</p>
+                        <p><strong>Location:</strong> Dhule </p>
+                    </div>
+                    <div class="car-card">
+                      <img src="https://i.ibb.co/svCTmcr/IMG-7794.jpg" alt="IMG-7794">
+                        <h3>Mercedes-Benz EQS Maybach</h3>
+                      <p><strong>Price:</strong> ₹1,00,00,000</p>                     
+<p><strong>Owner Name:</strong> Shivaji Patil </p><p><strong>Contact</strong> 0011223344</p>
+<p><strong>Registration Number:</strong> MH20AB7575</p>
+                        <p><strong>Location:</strong> Kannad </p>
+                    </div>
+                    <!-- Add similar blocks for other cars -->
+                </div>
+            </div>
+        </section>
+        <section id="sell" class="info">
+            <div class="container">
+                <h2>Sell a Car</h2>
+                <form id="sellCarForm">
+                    <label for="carModel">Car Model:</label>
+                    <input type="text" id="carModel" name="carModel" required>
+                    
+                    <label for="carPrice">Price (in ₹):</label>
+                    <input type="number" id="carPrice" name="carPrice" required>
+                    
+                    <label for="carRegNumber">Car Registration Number:</label>
+                    <input type="text" id="carRegNumber" name="carRegNumber" required>
+                    
+                    <label for="carLocation">Car Location:</label>
+                    <input type="text" id="carLocation" name="carLocation" required>
+                    
+                    <label for="ownerName">Owner's Name:</label>
+                    <input type="text" id="ownerName" name="ownerName" required>
+                    
+                    <label for="contactNumber">Contact Number:</label>
+                    <input type="tel" id="contactNumber" name="contactNumber" required>
+                    
+                    <label for="carImage">Upload Car Image:</label>
+                    <input type="file" id="carImage" name="carImage" accept="image/*" required>
+                    
+                    <button type="submit">List Car</button>
+                </form>
+            </div>
+        </section>
+        <section id="contact" class="info">
+            <div class="container">
+                <h2>Contact Us</h2>
+                <p>For any inquiries, please email us at <a href="mailto:support@carconnect.com">support@carconnect.com</a></p>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Car Connect. All rights reserved.</p>
         </div>
-    </div>
-
+    </footer>
     <script>
-        const allQuestions = [
-            {
-                question: "The full form of CSS is:",
-                options: ["Cascading Style Sheets", "Coloured Special Sheets", "Color and Style Sheets", "None of the above"],
-                correct: 0,
-                background: "url('https://i.ibb.co/PmKqYc4/16ffa45e-6889-4bc0-ad61-a659dba5e322.jpg')"
-            },
-            {
-                question: "Which planet is known as the Red Planet?",
-                options: ["Earth", "Mars", "Jupiter", "Saturn"],
-                correct: 1,
-                background: "url('https://i.ibb.co/s9mMBhH/4d043c9e-dbdc-49a6-9c78-79113def1fe7.jpg')"
-            },
-            {
-                question: "What is the official affiliation of MIT Polytechnic Chh.Sambhajinagar?",
-                options: ["AICTE", "UGC", "MSBTE", "AIU"],
-                correct: 2,
-                background: "url('https://i.ibb.co/TMRR4C6/161449df-bb8d-48f3-a460-476cd7105d1e.jpg')"
-            },
-            // Additional Questions
-            {
-                question: "What does AJP stand for in technology?",
-                options: ["Asynchronous Java Protocol", "Advanced Java Platform", "Association of Java Programmers", "None of the above"],
-                correct: 1,
-                background: "url('https://th.bing.com/th/id/OIP.errfo50MykcXGyW80cltHQHaE8?rs=1&pid=ImgDetMain')"
-            },
-            {
-                question: "Which Indian leader was known for the 'Salt March'?",
-                options: ["Mahatma Gandhi", "Jawaharlal Nehru", "Subhas Chandra Bose", "Bhagat Singh"],
-                correct: 0,
-                background: "url('https://th.bing.com/th/id/R.c6bb03eb565a811328787cea6326e022?rik=fTAfniYXrrcFzw&riu=http%3a%2f%2fwww.satyagrahafoundation.org%2fwp-content%2fuploads%2f2014%2f10%2fThe-Salt-March.jpeg&ehk=1r9fZQLeswSwJH5WBAWzGPf6YiUFw0bAa7CPBOM%2booo%3d&risl=&pid=ImgRaw&r=0')"
-            },
-            {
-                question: "What is the capital city of India?",
-                options: ["Mumbai", "Delhi", "Kolkata", "Chennai"],
-                correct: 1,
-                background: "url('https://i.pinimg.com/originals/e1/d7/45/e1d745bf93c4ed5c8afde357c89db82c.jpg')"
-            },
-            {
-                question: "Which language is primarily used for web development?",
-                options: ["JavaScript", "Python", "C++", "Java"],
-                correct: 0,
-                background: "url('https://img.plantservices.com/files/base/ebm/plantservices/image/2022/08/1660318472113-2001assetmanager.png?auto=format,compress&fit=fill&fill=blur&w=1200&h=630')"
-            },
-            {
-                question: "In which year did India gain independence from British rule?",
-                options: ["1942", "1947", "1950", "1952"],
-                correct: 1,
-                background: "url('https://wallpapercave.com/wp/eZVLBYx.jpg')"
-            },
-            {
-                question: "Which is the largest state in India by area?",
-                options: ["Madhya Pradesh", "Rajasthan", "Uttar Pradesh", "Maharashtra"],
-                correct: 1,
-                background: "url('https://th.bing.com/th/id/OIP.Q99jtYnZz6Bj_6HVOJDthQHaEo?rs=1&pid=ImgDetMain')"
-            },
-            {
-                question: "Who wrote the 'Azaadi Ka Amrit Mahotsav'?",
-                options: ["Rabindranath Tagore", "Mahatma Gandhi", "Jawaharlal Nehru", "Sardar Patel"],
-                correct: 1,
-                background: "url('https://png.pngtree.com/thumb_back/fw800/background/20220901/pngtree-old-books-history-educate-learning-photo-image_236328.jpg')"
-            },
-            {
-                question: "What is the full form of HTML?",
-                options: ["HyperText Markup Language", "HyperText Machine Language", "HighText Markup Language", "None of the above"],
-                correct: 0,
-                background: "url('https://www.wallpapertip.com/wmimgs/76-769937_information-technology-concept-on-computer-display-technical-bg.jpg')"
-            },
-            {
-                question: "Who is known as the 'Iron Man of India'?",
-                options: ["Jawaharlal Nehru", "Subhas Chandra Bose", "Mahatma Gandhi", "Sardar Vallabhbhai Patel"],
-                correct: 3,
-                background: "url('https://www.dailypioneer.com/uploads/2019/story/images/big/web-series-on-india-s--iron-man--sardar-vallabhbhai-patel-in-the-works-2019-03-11.gif')"
-            },
-            {
-                question: "What is the national sport of India?",
-                options: ["Cricket", "Hockey", "Football", "Kabaddi"],
-                correct: 1,
-                background: "url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjrgZ26OHZCAy9W5jw3fmdiZlvzT30I9kVCZhIfMkHQ77DaTb1TRDcY6EeDIAq7Vaxuntp-ySUp10__ynSK8DM-2yJVga2kenvca-rU9jTfUKBihxrarnT7obU09tfZImEkWwP1v38KGlp4mGDrko7apEadlFES4CQFQjqOz-qSrt80bT4PIH9EckO7ltWz/s2240/Nnational.png')"
-            },
-            {
-                question: "Which element has the chemical symbol 'Au'?",
-                options: ["Gold", "Silver", "Copper", "Iron"],
-                correct: 0,
-                background: "url('https://www.c-60.com/wp-content/uploads/2022/10/dna.webp')"
-            },
-            {
-                question: "What is the currency of Japan?",
-                options: ["Yuan", "Won", "Dollar", "Yen"],
-                correct: 3,
-                background: "url('https://gambletroll.com/wp-content/uploads/2021/06/digital_currencies.jpg')"
-            },
-            {
-                question: "Which planet is known as the 'Blue Planet'?",
-                options: ["Earth", "Neptune", "Uranus", "Venus"],
-                correct: 0,
-                background: "url('https://th.bing.com/th/id/OIP.UL6E6ROpOXO0CvgsxFoOHQHaEK?rs=1&pid=ImgDetMain')"
-            },
-            {
-                question: "Who is known as the 'Father of the Nation' in India?",
-                options: ["Jawaharlal Nehru", "Mahatma Gandhi", "Subhas Chandra Bose", "Bhagat Singh"],
-                correct: 1,
-                background: "url('https://i.pinimg.com/originals/df/50/95/df509557b49ebfda2f5f845a81472535.jpg')"
-            },
-            {
-                question: "What is the main function of the CPU in a computer?",
-                options: ["Store data", "Process instructions", "Connect to the internet", "Manage power"],
-                correct: 1,
-                background: "url('https://sm.pcmag.com/t/pcmag_au/news/i/intel-alde/intel-alder-lake-cpus-to-support-pcie-50-ddr5-ram_js2z.1920.jpg')"
-            },
-            {
-                question: "Which programming language is known as the 'mother of all languages'?",
-                options: ["Java", "C", "Python", "C++"],
-                correct: 1,
-                background: "url('https://static.vecteezy.com/system/resources/thumbnails/002/749/158/small/python-high-level-programing-language-communications-technology-concept-photo.jpg')"
-            }
-        ];
+        document.addEventListener('DOMContentLoaded', () => {
+            const viewCarsBtn = document.getElementById('viewCarsBtn');
+            const carsList = document.getElementById('carsList');
 
-        let questions = [];
-        let currentQuestion = 0;
-        let correctAnswers = 0;
-        let incorrectAnswers = 0;
-        let reviewIncorrect = [];
-
-        function startQuiz() {
-            document.getElementById('welcome-screen').style.display = 'none';
-            document.getElementById('quiz-container').style.display = 'block';
-            selectRandomQuestions();
-            loadQuestion();
-        }
-
-        function selectRandomQuestions() {
-            let selected = [];
-            while (selected.length < 5) {
-                let question = allQuestions[Math.floor(Math.random() * allQuestions.length)];
-                if (!selected.includes(question)) {
-                    selected.push(question);
+            viewCarsBtn.addEventListener('click', () => {
+                if (carsList.classList.contains('hidden')) {
+                    carsList.classList.remove('hidden');
+                    viewCarsBtn.textContent = 'Hide Cars';
+                } else {
+                    carsList.classList.add('hidden');
+                    viewCarsBtn.textContent = 'View Cars';
                 }
-            }
-            questions = selected;
-        }
-
-        function loadQuestion() {
-            const questionElement = document.getElementById('question');
-            const optionsElement = document.getElementById('options');
-            const nextButton = document.getElementById('next-btn');
-            const feedbackElement = document.getElementById('feedback');
-            const current = questions[currentQuestion];
-
-            questionElement.textContent = current.question;
-            optionsElement.innerHTML = '';
-            feedbackElement.innerHTML = '';  // Clear previous feedback
-            document.body.style.backgroundImage = current.background;  // Set background image
-
-            current.options.forEach((option, index) => {
-                const li = document.createElement('li');
-                li.textContent = option;
-                li.setAttribute('data-index', index);
-                li.addEventListener('click', () => evaluateAnswer(index, li));
-                optionsElement.appendChild(li);
             });
 
-            nextButton.style.display = 'none';
-        }
+            const sellCarForm = document.getElementById('sellCarForm');
 
-        function evaluateAnswer(selectedIndex, element) {
-            const correctIndex = questions[currentQuestion].correct;
-            const nextButton = document.getElementById('next-btn');
-            const feedbackElement = document.getElementById('feedback');
+            sellCarForm.addEventListener('submit', (event) => {
+                event.preventDefault();
 
-            if (selectedIndex === correctIndex) {
-                element.classList.add('correct');
-                correctAnswers++;
-                feedbackElement.textContent = "Correct!";
-                feedbackElement.style.color = "green";
-            } else {
-                element.classList.add('incorrect');
-                document.querySelector(`li[data-index="${correctIndex}"]`).classList.add('correct');
-                incorrectAnswers++;
-                feedbackElement.innerHTML = `Incorrect! The correct answer is "${questions[currentQuestion].options[correctIndex]}".`;
-                feedbackElement.style.color = "red";
-                reviewIncorrect.push({
-                    question: questions[currentQuestion].question,
-                    correctAnswer: questions[currentQuestion].options[correctIndex],
-                    yourAnswer: questions[currentQuestion].options[selectedIndex]
-                });
-            }
+                // Capture the form input values
+                const carModel = document.getElementById('carModel').value;
+                const carPrice = document.getElementById('carPrice').value;
+                const carRegNumber = document.getElementById('carRegNumber').value;
+                const carLocation = document.getElementById('carLocation').value;
+                const ownerName = document.getElementById('ownerName').value;
+                const contactNumber = document.getElementById('contactNumber').value;
+                const carImageInput = document.getElementById('carImage');
+                const carImageURL = URL.createObjectURL(carImageInput.files[0]);
 
-            Array.from(document.getElementById('options').children).forEach((li) => {
-                li.style.pointerEvents = 'none';
-            });
+            // Create new car card for listed car
+            const carCard = document.createElement('div');
+            carCard.classList.add('car-card');
 
-            nextButton.style.display = 'block';
-        }
+            carCard.innerHTML = `
+                <img src="${carImageURL}" alt="${carModel}">
+                <h3>${carModel}</h3>
+                <p><strong>Price:</strong> ₹${carPrice}</p>
+                <p><strong>Owner Name:</strong> ${ownerName}</p>
+                <p><strong>Contact:</strong> ${contactNumber}</p>
+                <p><strong>Registration Number:</strong> ${carRegNumber}</p>
+                <p><strong>Location:</strong> ${carLocation}</p>
+            `;
 
-        function loadNextQuestion() {
-            currentQuestion++;
-            if (currentQuestion < questions.length) {
-                loadQuestion();
-            } else {
-                displayResults();
-            }
-        }
+            carsList.appendChild(carCard);
+            carsList.classList.remove('hidden');
+            viewCarsBtn.textContent = 'Hide Cars';
 
-        function displayResults() {
-            const resultContainer = document.getElementById('result-container');
-            const correctAnswersElement = document.getElementById('correct-answers');
-            const incorrectAnswersElement = document.getElementById('incorrect-answers');
-            const incorrectAnswersList = document.getElementById('incorrect-answers-list');
-
-            let resultHTML = `<h2>You've completed the quiz!</h2>`;
-            correctAnswersElement.textContent = correctAnswers;
-            incorrectAnswersElement.textContent = incorrectAnswers;
-
-            if (reviewIncorrect.length > 0) {
-                let reviewHTML = `<h3>Review of Incorrect Answers:</h3><ul>`;
-                reviewIncorrect.forEach((item) => {
-                    reviewHTML += `<li><strong>Question:</strong> ${item.question}<br><strong>Your Answer:</strong> ${item.yourAnswer}<br><strong>Correct Answer:</strong> ${item.correctAnswer}</li>`;
-                });
-                reviewHTML += `</ul>`;
-                incorrectAnswersList.innerHTML = reviewHTML;
-            }
-
-            resultContainer.style.display = 'flex';
-            document.getElementById('quiz-container').style.display = 'none';
-            document.body.style.backgroundImage = "url('result-background.jpg')";  // Final background image
-        }
-
-        function restartQuiz() {
-            currentQuestion = 0;
-            correctAnswers = 0;
-            incorrectAnswers = 0;
-            reviewIncorrect = [];
-            document.getElementById('result-container').style.display = 'none';
-            document.getElementById('welcome-screen').style.display = 'block';
-            document.body.style.backgroundImage = "none";  // Remove background image for result screen
-        }
-    </script>
+            // Clear form after submission
+            sellCarForm.reset();
+        });
+    });
+</script>
 </body>
 </html>
