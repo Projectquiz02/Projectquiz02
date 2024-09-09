@@ -7,18 +7,23 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
-            background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+            background: radial-gradient(circle, #e0f7fa, #b2ebf2);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #343a40;
+            color: #212121;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
 
         .container {
             max-width: 500px;
-            margin-top: 50px;
             padding: 30px;
             background: #ffffff;
             border-radius: 12px;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
         }
 
         h1 {
@@ -39,13 +44,13 @@
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
             border-radius: 10px;
-            background-color: #f8f9fa;
+            background-color: #e3f2fd;
         }
 
         .square:hover {
-            background-color: #e2e6ea;
-            transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            background-color: #bbdefb;
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
         }
 
         .square.X {
@@ -53,14 +58,21 @@
         }
 
         .square.O {
-            color: #28a745;
+            color: #4caf50;
         }
 
         #message {
             font-size: 1.5em;
             font-weight: bold;
             margin-bottom: 20px;
-            color: #dc3545;
+        }
+
+        #message.winner {
+            color: #4caf50;
+        }
+
+        #message.draw {
+            color: #ff5722;
         }
 
         #reset {
@@ -88,7 +100,7 @@
     </style>
 </head>
 <body>
-    <div class="container text-center">
+    <div class="container">
         <h1>Tic-Tac-Toe</h1>
         <div id="message" class="mb-3"></div>
         <div class="row">
@@ -173,12 +185,14 @@
             const winner = checkWin();
             if (winner) {
                 message.textContent = `${winner} wins!`;
+                message.classList.add('winner');
                 gameActive = false;
                 return;
             }
             
             if (checkDraw()) {
                 message.textContent = "It's a draw!";
+                message.classList.add('draw');
                 gameActive = false;
                 return;
             }
@@ -195,6 +209,7 @@
                 square.classList.remove('X', 'O');
             });
             message.textContent = '';
+            message.classList.remove('winner', 'draw');
         }
 
         squares.forEach(square => square.addEventListener('click', handleClick));
