@@ -3,266 +3,261 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resume Generator</title>
+    <title>Smartphone Specifications</title>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
             margin: 0;
             padding: 0;
-            background-color: #f0f2f5;
+            transition: background-color 0.3s, color 0.3s;
+            background-color: #f4f4f4;
+            color: #333;
         }
-        .container {
-            width: 90%;
-            max-width: 1100px;
-            margin: 20px auto;
-            background: #ffffff;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+
+        body.dark-theme {
+            background-color: #333;
+            color: #f4f4f4;
         }
-        h1 {
+
+        header {
+            background: #007bff;
+            color: #fff;
+            padding: 15px;
             text-align: center;
-            margin-bottom: 30px;
-            color: #007bff;
-            font-size: 2.5em;
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
         }
-        form {
-            margin-bottom: 30px;
+
+        .theme-toggle {
+            background: #ff5722;
+            border: none;
+            padding: 8px 16px;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 14px;
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            transition: background-color 0.3s;
         }
-        fieldset {
-            border: 1px solid #ddd;
-            border-radius: 10px;
+
+        .theme-toggle:hover {
+            background-color: #e64a19;
+        }
+
+        main {
+            padding: 20px;
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        section {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             padding: 20px;
             margin-bottom: 20px;
-            background: #fafafa;
+            transition: transform 0.3s;
         }
-        legend {
-            font-weight: bold;
-            font-size: 1.2em;
-            color: #007bff;
+
+        section:hover {
+            transform: scale(1.02);
         }
-        label {
+
+        h1, h2 {
+            margin: 0;
+            padding: 0;
+        }
+
+        label, select, input[type="text"] {
             display: block;
-            margin-bottom: 8px;
-            color: #555;
-        }
-        input, textarea {
-            width: calc(100% - 22px);
-            padding: 12px;
             margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-            font-size: 1em;
         }
-        textarea {
-            resize: vertical;
-        }
-        button {
-            display: block;
+
+        select, input[type="text"] {
             width: 100%;
-            padding: 15px;
-            background-color: #007bff;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 15px;
+            background: #007bff;
             color: #fff;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 1.1em;
-            margin-bottom: 10px;
+            font-size: 16px;
+            margin-right: 10px;
+            transition: background-color 0.3s;
         }
+
         button:hover {
-            background-color: #0056b3;
+            background: #0056b3;
         }
-        .resume-output {
-            display: none;
-            margin-top: 30px;
-            padding: 30px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            background: #ffffff;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+
+        .reset-button {
+            background: #dc3545;
         }
-        .resume-output h2 {
-            margin-top: 0;
-            color: #007bff;
-            border-bottom: 3px solid #007bff;
-            padding-bottom: 10px;
+
+        .reset-button:hover {
+            background: #c82333;
         }
-        .resume-section {
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #ddd;
-        }
-        .resume-section h3 {
-            margin-top: 0;
-            color: #333;
-            font-size: 1.3em;
-        }
-        .resume-section p {
-            margin: 10px 0;
-            line-height: 1.6;
-            color: #555;
-        }
-        .buttons {
+
+        .phone-card {
             display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            background: #fff;
+            transition: transform 0.3s;
+            cursor: pointer;
         }
-        .buttons button {
-            width: 48%;
+
+        .phone-card:hover {
+            transform: scale(1.05);
         }
+
+        .phone-card img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .phone-card h3 {
+            margin: 10px 0;
+        }
+
+        .phone-card p {
+            margin: 5px 0;
+        }
+
         @media (max-width: 600px) {
-            .buttons {
-                flex-direction: column;
+            .theme-toggle {
+                font-size: 12px;
+                padding: 6px 12px;
+                top: 10px;
+                right: 10px;
             }
-            .buttons button {
-                width: 100%;
-                margin-bottom: 10px;
+            select, input[type="text"], button {
+                font-size: 14px;
             }
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <h1>Resume Generator</h1>
-        <form id="resumeForm">
-            <fieldset>
-                <legend>Personal Information</legend>
-                <label for="name">Full Name:</label>
-                <input type="text" id="name" name="name" required>
-
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-
-                <label for="phone">Phone:</label>
-                <input type="tel" id="phone" name="phone">
-
-                <label for="address">Address:</label>
-                <input type="text" id="address" name="address">
-            </fieldset>
-
-            <fieldset>
-                <legend>Experience</legend>
-                <label for="experience">Experience (List your most recent job first):</label>
-                <textarea id="experience" name="experience" rows="6" required></textarea>
-            </fieldset>
-
-            <fieldset>
-                <legend>Education</legend>
-                <label for="education">Education (List your most recent degree first):</label>
-                <textarea id="education" name="education" rows="6" required></textarea>
-            </fieldset>
-
-            <fieldset>
-                <legend>Skills</legend>
-                <label for="skills">Skills (Separate each skill with a comma):</label>
-                <textarea id="skills" name="skills" rows="4" required></textarea>
-            </fieldset>
-
-            <fieldset>
-                <legend>Additional Information</legend>
-                <label for="additional">Additional Information (Optional):</label>
-                <textarea id="additional" name="additional" rows="4"></textarea>
-            </fieldset>
-
-            <button type="button" onclick="generateResume()">Generate Resume</button>
-        </form>
-
-        <div id="resumeOutput" class="resume-output"></div>
-        <div class="buttons">
-            <button id="printButton" onclick="printResume()">Print Resume</button>
-            <button id="downloadButton" onclick="downloadResume()">Download Resume</button>
-            <button id="previewButton" onclick="previewResume()">Preview Resume</button>
-            <button id="pdfButton" onclick="generatePDF()">Download as PDF</button>
-        </div>
-    </div>
-
+<body class="light-theme">
+    <header>
+        <h1>Smartphone Specifications</h1>
+        <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+    </header>
+    <main>
+        <section id="search">
+            <h2>Search for a Smartphone</h2>
+            <input type="text" id="searchInput" placeholder="Search by model..." oninput="filterPhones()">
+        </section>
+        <section id="phoneList">
+            <h2>Available Smartphones</h2>
+            <div class="phone-card" onclick="showSpecifications('phone1')">
+                <img src="phone1.jpg" alt="Phone Model 1">
+                <h3>Phone Model 1</h3>
+                <p>Octa-Core 2.8 GHz</p>
+                <p>8 GB RAM</p>
+                <p>128 GB Storage</p>
+            </div>
+            <div class="phone-card" onclick="showSpecifications('phone2')">
+                <img src="phone2.jpg" alt="Phone Model 2">
+                <h3>Phone Model 2</h3>
+                <p>Quad-Core 2.5 GHz</p>
+                <p>6 GB RAM</p>
+                <p>64 GB Storage</p>
+            </div>
+            <div class="phone-card" onclick="showSpecifications('phone3')">
+                <img src="phone3.jpg" alt="Phone Model 3">
+                <h3>Phone Model 3</h3>
+                <p>Hexa-Core 3.0 GHz</p>
+                <p>12 GB RAM</p>
+                <p>256 GB Storage</p>
+            </div>
+        </section>
+        <section id="display">
+            <h2>Specifications</h2>
+            <p id="display-model">Model: -</p>
+            <p id="display-processor">Processor: -</p>
+            <p id="display-ram">RAM: -</p>
+            <p id="display-storage">Storage: -</p>
+            <p id="display-battery">Battery: -</p>
+        </section>
+    </main>
     <script>
-        function generateResume() {
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const phone = document.getElementById('phone').value;
-            const address = document.getElementById('address').value;
-            const experience = document.getElementById('experience').value;
-            const education = document.getElementById('education').value;
-            const skills = document.getElementById('skills').value.split(',').map(skill => skill.trim()).join(', ');
-            const additional = document.getElementById('additional').value;
+        const phones = {
+            phone1: {
+                model: 'Phone Model 1',
+                processor: 'Octa-Core 2.8 GHz',
+                ram: '8 GB',
+                storage: '128 GB',
+                battery: '4500 mAh',
+                image: 'phone1.jpg'
+            },
+            phone2: {
+                model: 'Phone Model 2',
+                processor: 'Quad-Core 2.5 GHz',
+                ram: '6 GB',
+                storage: '64 GB',
+                battery: '4000 mAh',
+                image: 'phone2.jpg'
+            },
+            phone3: {
+                model: 'Phone Model 3',
+                processor: 'Hexa-Core 3.0 GHz',
+                ram: '12 GB',
+                storage: '256 GB',
+                battery: '5000 mAh',
+                image: 'phone3.jpg'
+            }
+        };
 
-            const resumeOutput = document.getElementById('resumeOutput');
-            
-            resumeOutput.innerHTML = `
-                <div class="resume-header">
-                    <h2>${name}</h2>
-                    <p>Email: ${email} | Phone: ${phone}</p>
-                    <p>Address: ${address}</p>
-                </div>
-                <div class="resume-section">
-                    <h3>Experience</h3>
-                    <p>${experience}</p>
-                </div>
-                <div class="resume-section">
-                    <h3>Education</h3>
-                    <p>${education}</p>
-                </div>
-                <div class="resume-section">
-                    <h3>Skills</h3>
-                    <p>${skills}</p>
-                </div>
-                ${additional ? `<div class="resume-section"><h3>Additional Information</h3><p>${additional}</p></div>` : ''}
-            `;
-            
-            resumeOutput.style.display = 'block';
+        function showSpecifications(phoneId) {
+            const specs = phones[phoneId];
+            if (specs) {
+                document.getElementById('display-model').textContent = `Model: ${specs.model}`;
+                document.getElementById('display-processor').textContent = `Processor: ${specs.processor}`;
+                document.getElementById('display-ram').textContent = `RAM: ${specs.ram}`;
+                document.getElementById('display-storage').textContent = `Storage: ${specs.storage}`;
+                document.getElementById('display-battery').textContent = `Battery: ${specs.battery}`;
+            }
         }
 
-        function printResume() {
-            const printWindow = window.open('', '', 'height=600,width=800');
-            const resumeContent = document.getElementById('resumeOutput').innerHTML;
-            printWindow.document.write('<html><head><title>Print Resume</title>');
-            printWindow.document.write('<style>body { font-family: Arial, sans-serif; margin: 20px; }');
-            printWindow.document.write('h2 { color: #007bff; }');
-            printWindow.document.write('h3 { color: #333; }');
-            printWindow.document.write('p { line-height: 1.6; }</style>');
-            printWindow.document.write('</head><body >');
-            printWindow.document.write(resumeContent);
-            printWindow.document.write('</body></html>');
-            printWindow.document.close();
-            printWindow.print();
+        function toggleTheme() {
+            const body = document.body;
+            if (body.classList.contains('light-theme')) {
+                body.classList.replace('light-theme', 'dark-theme');
+            } else {
+                body.classList.replace('dark-theme', 'light-theme');
+            }
         }
 
-        function downloadResume() {
-            const resumeContent = document.getElementById('resumeOutput').innerHTML;
-            const blob = new Blob([resumeContent], { type: 'application/html' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'resume.html';
-            a.click();
-            URL.revokeObjectURL(url);
-        }
+        function filterPhones() {
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            const phoneCards = document.querySelectorAll('.phone-card');
 
-        function previewResume() {
-            const previewWindow = window.open('', '', 'height=800,width=1200');
-            const resumeContent = document.getElementById('resumeOutput').innerHTML;
-            previewWindow.document.write('<html><head><title>Preview Resume</title>');
-            previewWindow.document.write('<style>body { font-family: Arial, sans-serif; margin: 20px; }');
-            previewWindow.document.write('h2 { color: #007bff; }');
-            previewWindow.document.write('h3 { color: #333; }');
-            previewWindow.document.write('p { line-height: 1.6; }</style>');
-            previewWindow.document.write('</head><body >');
-            previewWindow.document.write(resumeContent);
-            previewWindow.document.write('</body></html>');
-            previewWindow.document.close();
-        }
-
-        function generatePDF() {
-            const resumeContent = document.getElementById('resumeOutput').innerHTML;
-            const pdf = new jsPDF();
-            pdf.fromHTML(resumeContent, 10, 10);
-            pdf.save('resume.pdf');
+            phoneCards.forEach(card => {
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                if (title.includes(searchInput)) {
+                    card.style.display = '';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
         }
     </script>
-
-    <!-- Include jsPDF library for PDF generation -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </body>
 </html>
