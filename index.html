@@ -3,397 +3,266 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Quiz</title>
+    <title>Resume Generator</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            font-family: 'Arial', sans-serif;
             margin: 0;
-            transition: background-image 0.5s ease-in-out;
-        }
-
-        .welcome-screen {
-            background-image: url('https://wallpaperaccess.com/thumb/937199.jpg'); /* Set your background image here */
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            height: 100vh; /* Full height */
-            width: 100%;
-            color: rgb(255, 255, 255);
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        .welcome-screen h1 {
-            font-size: 2rem;
-            margin-bottom: 20px;
-        }
-
-        .welcome-screen button {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-
-        .welcome-screen button:hover {
-            background-color: #0056b3;
-        }
-
-        .quiz-container, .result-container {
-            background-color:  rgba(255, 255, 255, 0.9);
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 90%;
-            max-width: 500px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        #options {
-            list-style: none;
             padding: 0;
-            margin: 0;
-            width: 100%;
+            background-color: #f0f2f5;
         }
-
-        #options li {
-            padding: 10px;
-            margin: 5px 0;
-            background-color: #f0f0f0;
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 20px auto;
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #007bff;
+            font-size: 2.5em;
+        }
+        form {
+            margin-bottom: 30px;
+        }
+        fieldset {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background: #fafafa;
+        }
+        legend {
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #007bff;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+        }
+        input, textarea {
+            width: calc(100% - 22px);
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
             border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
+            box-sizing: border-box;
+            font-size: 1em;
         }
-
-        #options li:hover {
-            background-color: #ddd;
+        textarea {
+            resize: vertical;
         }
-
-        .correct {
-            background-color: #c8e6c9;
-        }
-
-        .incorrect {
-            background-color: #ffcdd2;
-        }
-
-        #next-btn, #start-again-btn {
-            margin-top: 20px;
-            padding: 10px 20px;
+        button {
+            display: block;
+            width: 100%;
+            padding: 15px;
             background-color: #007bff;
-            color: white;
+            color: #fff;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            font-size: 1.1em;
+            margin-bottom: 10px;
         }
-
-        #next-btn:hover, #start-again-btn:hover {
+        button:hover {
             background-color: #0056b3;
         }
-
-        #feedback {
-            margin-top: 20px;
-            font-weight: bold;
+        .resume-output {
+            display: none;
+            margin-top: 30px;
+            padding: 30px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background: #ffffff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
-
-        .result-container {
-            background-image: url('result-background.jpg');
-            background-size: cover;
-            background-position: center;
-            padding: 20px;
-            border-radius: 8px;
-            text-align: center;
+        .resume-output h2 {
+            margin-top: 0;
+            color: #007bff;
+            border-bottom: 3px solid #007bff;
+            padding-bottom: 10px;
+        }
+        .resume-section {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        .resume-section h3 {
+            margin-top: 0;
+            color: #333;
+            font-size: 1.3em;
+        }
+        .resume-section p {
+            margin: 10px 0;
+            line-height: 1.6;
+            color: #555;
+        }
+        .buttons {
             display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh; /* Full height */
-            width: 100%;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .buttons button {
+            width: 48%;
+        }
+        @media (max-width: 600px) {
+            .buttons {
+                flex-direction: column;
+            }
+            .buttons button {
+                width: 100%;
+                margin-bottom: 10px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="welcome-screen" id="welcome-screen">
-        <div>
-            <h1>Welcome to the Interactive Quiz!</h1>
-            <button id="start-btn" onclick="startQuiz()">Start Quiz</button>
-        </div>
-    </div>
-    <div class="quiz-container" id="quiz-container" style="display: none;">
-        <h1>Quiz</h1>
-        <div id="quiz">
-            <p id="question"></p>
-            <ul id="options">
-                <!-- Options will be dynamically added here -->
-            </ul>
-            <div id="feedback"></div>
-            <button id="next-btn" onclick="loadNextQuestion()">Next Question</button>
-        </div>
-    </div>
+    <div class="container">
+        <h1>Resume Generator</h1>
+        <form id="resumeForm">
+            <fieldset>
+                <legend>Personal Information</legend>
+                <label for="name">Full Name:</label>
+                <input type="text" id="name" name="name" required>
 
-    <div class="result-container" id="result-container" style="display: none;">
-        <div>
-            <h2>You've completed the quiz!</h2>
-            <p><strong> Correct Answers:</strong> Correct Answers: <span id="correct-answers"></span></p>
-            <p><strong> Incorrect Answers: </strong><span id="incorrect-answers"></span></p>
-            <div id="incorrect-answers-list"></div>
-            <button id="start-again-btn" onclick="restartQuiz()">Start Quiz Again</button>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="phone">Phone:</label>
+                <input type="tel" id="phone" name="phone">
+
+                <label for="address">Address:</label>
+                <input type="text" id="address" name="address">
+            </fieldset>
+
+            <fieldset>
+                <legend>Experience</legend>
+                <label for="experience">Experience (List your most recent job first):</label>
+                <textarea id="experience" name="experience" rows="6" required></textarea>
+            </fieldset>
+
+            <fieldset>
+                <legend>Education</legend>
+                <label for="education">Education (List your most recent degree first):</label>
+                <textarea id="education" name="education" rows="6" required></textarea>
+            </fieldset>
+
+            <fieldset>
+                <legend>Skills</legend>
+                <label for="skills">Skills (Separate each skill with a comma):</label>
+                <textarea id="skills" name="skills" rows="4" required></textarea>
+            </fieldset>
+
+            <fieldset>
+                <legend>Additional Information</legend>
+                <label for="additional">Additional Information (Optional):</label>
+                <textarea id="additional" name="additional" rows="4"></textarea>
+            </fieldset>
+
+            <button type="button" onclick="generateResume()">Generate Resume</button>
+        </form>
+
+        <div id="resumeOutput" class="resume-output"></div>
+        <div class="buttons">
+            <button id="printButton" onclick="printResume()">Print Resume</button>
+            <button id="downloadButton" onclick="downloadResume()">Download Resume</button>
+            <button id="previewButton" onclick="previewResume()">Preview Resume</button>
+            <button id="pdfButton" onclick="generatePDF()">Download as PDF</button>
         </div>
     </div>
 
     <script>
-        const allQuestions = [
-            {
-                question: "The full form of CSS is:",
-                options: ["Cascading Style Sheets", "Coloured Special Sheets", "Color and Style Sheets", "None of the above"],
-                correct: 0,
-                background: "url('https://i.ibb.co/PmKqYc4/16ffa45e-6889-4bc0-ad61-a659dba5e322.jpg')"
-            },
-            {
-                question: "Which planet is known as the Red Planet?",
-                options: ["Earth", "Mars", "Jupiter", "Saturn"],
-                correct: 1,
-                background: "url('https://i.ibb.co/s9mMBhH/4d043c9e-dbdc-49a6-9c78-79113def1fe7.jpg')"
-            },
-            {
-                question: "What is the official affiliation of MIT Polytechnic Chh.Sambhajinagar?",
-                options: ["AICTE", "UGC", "MSBTE", "AIU"],
-                correct: 2,
-                background: "url('https://i.ibb.co/TMRR4C6/161449df-bb8d-48f3-a460-476cd7105d1e.jpg')"
-            },
-            // Additional Questions
-            {
-                question: "What does AJP stand for in technology?",
-                options: ["Asynchronous Java Protocol", "Advanced Java Platform", "Association of Java Programmers", "None of the above"],
-                correct: 1,
-                background: "url('https://th.bing.com/th/id/OIP.errfo50MykcXGyW80cltHQHaE8?rs=1&pid=ImgDetMain')"
-            },
-            {
-                question: "Which Indian leader was known for the 'Salt March'?",
-                options: ["Mahatma Gandhi", "Jawaharlal Nehru", "Subhas Chandra Bose", "Bhagat Singh"],
-                correct: 0,
-                background: "url('https://th.bing.com/th/id/R.c6bb03eb565a811328787cea6326e022?rik=fTAfniYXrrcFzw&riu=http%3a%2f%2fwww.satyagrahafoundation.org%2fwp-content%2fuploads%2f2014%2f10%2fThe-Salt-March.jpeg&ehk=1r9fZQLeswSwJH5WBAWzGPf6YiUFw0bAa7CPBOM%2booo%3d&risl=&pid=ImgRaw&r=0')"
-            },
-            {
-                question: "What is the capital city of India?",
-                options: ["Mumbai", "Delhi", "Kolkata", "Chennai"],
-                correct: 1,
-                background: "url('https://i.pinimg.com/originals/e1/d7/45/e1d745bf93c4ed5c8afde357c89db82c.jpg')"
-            },
-            {
-                question: "Which language is primarily used for web development?",
-                options: ["JavaScript", "Python", "C++", "Java"],
-                correct: 0,
-                background: "url('https://img.plantservices.com/files/base/ebm/plantservices/image/2022/08/1660318472113-2001assetmanager.png?auto=format,compress&fit=fill&fill=blur&w=1200&h=630')"
-            },
-            {
-                question: "In which year did India gain independence from British rule?",
-                options: ["1942", "1947", "1950", "1952"],
-                correct: 1,
-                background: "url('https://wallpapercave.com/wp/eZVLBYx.jpg')"
-            },
-            {
-                question: "Which is the largest state in India by area?",
-                options: ["Madhya Pradesh", "Rajasthan", "Uttar Pradesh", "Maharashtra"],
-                correct: 1,
-                background: "url('https://th.bing.com/th/id/OIP.Q99jtYnZz6Bj_6HVOJDthQHaEo?rs=1&pid=ImgDetMain')"
-            },
-            {
-                question: "Who wrote the 'Azaadi Ka Amrit Mahotsav'?",
-                options: ["Rabindranath Tagore", "Mahatma Gandhi", "Jawaharlal Nehru", "Sardar Patel"],
-                correct: 1,
-                background: "url('https://png.pngtree.com/thumb_back/fw800/background/20220901/pngtree-old-books-history-educate-learning-photo-image_236328.jpg')"
-            },
-            {
-                question: "What is the full form of HTML?",
-                options: ["HyperText Markup Language", "HyperText Machine Language", "HighText Markup Language", "None of the above"],
-                correct: 0,
-                background: "url('https://www.wallpapertip.com/wmimgs/76-769937_information-technology-concept-on-computer-display-technical-bg.jpg')"
-            },
-            {
-                question: "Who is known as the 'Iron Man of India'?",
-                options: ["Jawaharlal Nehru", "Subhas Chandra Bose", "Mahatma Gandhi", "Sardar Vallabhbhai Patel"],
-                correct: 3,
-                background: "url('https://www.dailypioneer.com/uploads/2019/story/images/big/web-series-on-india-s--iron-man--sardar-vallabhbhai-patel-in-the-works-2019-03-11.gif')"
-            },
-            {
-                question: "What is the national sport of India?",
-                options: ["Cricket", "Hockey", "Football", "Kabaddi"],
-                correct: 1,
-                background: "url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjrgZ26OHZCAy9W5jw3fmdiZlvzT30I9kVCZhIfMkHQ77DaTb1TRDcY6EeDIAq7Vaxuntp-ySUp10__ynSK8DM-2yJVga2kenvca-rU9jTfUKBihxrarnT7obU09tfZImEkWwP1v38KGlp4mGDrko7apEadlFES4CQFQjqOz-qSrt80bT4PIH9EckO7ltWz/s2240/Nnational.png')"
-            },
-            {
-                question: "Which element has the chemical symbol 'Au'?",
-                options: ["Gold", "Silver", "Copper", "Iron"],
-                correct: 0,
-                background: "url('https://www.c-60.com/wp-content/uploads/2022/10/dna.webp')"
-            },
-            {
-                question: "What is the currency of Japan?",
-                options: ["Yuan", "Won", "Dollar", "Yen"],
-                correct: 3,
-                background: "url('https://gambletroll.com/wp-content/uploads/2021/06/digital_currencies.jpg')"
-            },
-            {
-                question: "Which planet is known as the 'Blue Planet'?",
-                options: ["Earth", "Neptune", "Uranus", "Venus"],
-                correct: 0,
-                background: "url('https://th.bing.com/th/id/OIP.UL6E6ROpOXO0CvgsxFoOHQHaEK?rs=1&pid=ImgDetMain')"
-            },
-            {
-                question: "Who is known as the 'Father of the Nation' in India?",
-                options: ["Jawaharlal Nehru", "Mahatma Gandhi", "Subhas Chandra Bose", "Bhagat Singh"],
-                correct: 1,
-                background: "url('https://i.pinimg.com/originals/df/50/95/df509557b49ebfda2f5f845a81472535.jpg')"
-            },
-            {
-                question: "What is the main function of the CPU in a computer?",
-                options: ["Store data", "Process instructions", "Connect to the internet", "Manage power"],
-                correct: 1,
-                background: "url('https://sm.pcmag.com/t/pcmag_au/news/i/intel-alde/intel-alder-lake-cpus-to-support-pcie-50-ddr5-ram_js2z.1920.jpg')"
-            },
-            {
-                question: "Which programming language is known as the 'mother of all languages'?",
-                options: ["Java", "C", "Python", "C++"],
-                correct: 1,
-                background: "url('https://static.vecteezy.com/system/resources/thumbnails/002/749/158/small/python-high-level-programing-language-communications-technology-concept-photo.jpg')"
-            }
-        ];
+        function generateResume() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const address = document.getElementById('address').value;
+            const experience = document.getElementById('experience').value;
+            const education = document.getElementById('education').value;
+            const skills = document.getElementById('skills').value.split(',').map(skill => skill.trim()).join(', ');
+            const additional = document.getElementById('additional').value;
 
-        let questions = [];
-        let currentQuestion = 0;
-        let correctAnswers = 0;
-        let incorrectAnswers = 0;
-        let reviewIncorrect = [];
-
-        function startQuiz() {
-            document.getElementById('welcome-screen').style.display = 'none';
-            document.getElementById('quiz-container').style.display = 'block';
-            selectRandomQuestions();
-            loadQuestion();
+            const resumeOutput = document.getElementById('resumeOutput');
+            
+            resumeOutput.innerHTML = `
+                <div class="resume-header">
+                    <h2>${name}</h2>
+                    <p>Email: ${email} | Phone: ${phone}</p>
+                    <p>Address: ${address}</p>
+                </div>
+                <div class="resume-section">
+                    <h3>Experience</h3>
+                    <p>${experience}</p>
+                </div>
+                <div class="resume-section">
+                    <h3>Education</h3>
+                    <p>${education}</p>
+                </div>
+                <div class="resume-section">
+                    <h3>Skills</h3>
+                    <p>${skills}</p>
+                </div>
+                ${additional ? `<div class="resume-section"><h3>Additional Information</h3><p>${additional}</p></div>` : ''}
+            `;
+            
+            resumeOutput.style.display = 'block';
         }
 
-        function selectRandomQuestions() {
-            let selected = [];
-            while (selected.length < 5) {
-                let question = allQuestions[Math.floor(Math.random() * allQuestions.length)];
-                if (!selected.includes(question)) {
-                    selected.push(question);
-                }
-            }
-            questions = selected;
+        function printResume() {
+            const printWindow = window.open('', '', 'height=600,width=800');
+            const resumeContent = document.getElementById('resumeOutput').innerHTML;
+            printWindow.document.write('<html><head><title>Print Resume</title>');
+            printWindow.document.write('<style>body { font-family: Arial, sans-serif; margin: 20px; }');
+            printWindow.document.write('h2 { color: #007bff; }');
+            printWindow.document.write('h3 { color: #333; }');
+            printWindow.document.write('p { line-height: 1.6; }</style>');
+            printWindow.document.write('</head><body >');
+            printWindow.document.write(resumeContent);
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            printWindow.print();
         }
 
-        function loadQuestion() {
-            const questionElement = document.getElementById('question');
-            const optionsElement = document.getElementById('options');
-            const nextButton = document.getElementById('next-btn');
-            const feedbackElement = document.getElementById('feedback');
-            const current = questions[currentQuestion];
-
-            questionElement.textContent = current.question;
-            optionsElement.innerHTML = '';
-            feedbackElement.innerHTML = '';  // Clear previous feedback
-            document.body.style.backgroundImage = current.background;  // Set background image
-
-            current.options.forEach((option, index) => {
-                const li = document.createElement('li');
-                li.textContent = option;
-                li.setAttribute('data-index', index);
-                li.addEventListener('click', () => evaluateAnswer(index, li));
-                optionsElement.appendChild(li);
-            });
-
-            nextButton.style.display = 'none';
+        function downloadResume() {
+            const resumeContent = document.getElementById('resumeOutput').innerHTML;
+            const blob = new Blob([resumeContent], { type: 'application/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'resume.html';
+            a.click();
+            URL.revokeObjectURL(url);
         }
 
-        function evaluateAnswer(selectedIndex, element) {
-            const correctIndex = questions[currentQuestion].correct;
-            const nextButton = document.getElementById('next-btn');
-            const feedbackElement = document.getElementById('feedback');
-
-            if (selectedIndex === correctIndex) {
-                element.classList.add('correct');
-                correctAnswers++;
-                feedbackElement.textContent = "Correct!";
-                feedbackElement.style.color = "green";
-            } else {
-                element.classList.add('incorrect');
-                document.querySelector(`li[data-index="${correctIndex}"]`).classList.add('correct');
-                incorrectAnswers++;
-                feedbackElement.innerHTML = `Incorrect! The correct answer is "${questions[currentQuestion].options[correctIndex]}".`;
-                feedbackElement.style.color = "red";
-                reviewIncorrect.push({
-                    question: questions[currentQuestion].question,
-                    correctAnswer: questions[currentQuestion].options[correctIndex],
-                    yourAnswer: questions[currentQuestion].options[selectedIndex]
-                });
-            }
-
-            Array.from(document.getElementById('options').children).forEach((li) => {
-                li.style.pointerEvents = 'none';
-            });
-
-            nextButton.style.display = 'block';
+        function previewResume() {
+            const previewWindow = window.open('', '', 'height=800,width=1200');
+            const resumeContent = document.getElementById('resumeOutput').innerHTML;
+            previewWindow.document.write('<html><head><title>Preview Resume</title>');
+            previewWindow.document.write('<style>body { font-family: Arial, sans-serif; margin: 20px; }');
+            previewWindow.document.write('h2 { color: #007bff; }');
+            previewWindow.document.write('h3 { color: #333; }');
+            previewWindow.document.write('p { line-height: 1.6; }</style>');
+            previewWindow.document.write('</head><body >');
+            previewWindow.document.write(resumeContent);
+            previewWindow.document.write('</body></html>');
+            previewWindow.document.close();
         }
 
-        function loadNextQuestion() {
-            currentQuestion++;
-            if (currentQuestion < questions.length) {
-                loadQuestion();
-            } else {
-                displayResults();
-            }
-        }
-
-        function displayResults() {
-            const resultContainer = document.getElementById('result-container');
-            const correctAnswersElement = document.getElementById('correct-answers');
-            const incorrectAnswersElement = document.getElementById('incorrect-answers');
-            const incorrectAnswersList = document.getElementById('incorrect-answers-list');
-
-            let resultHTML = `<h2>You've completed the quiz!</h2>`;
-            correctAnswersElement.textContent = correctAnswers;
-            incorrectAnswersElement.textContent = incorrectAnswers;
-
-            if (reviewIncorrect.length > 0) {
-                let reviewHTML = `<h3>Review of Incorrect Answers:</h3><ul>`;
-                reviewIncorrect.forEach((item) => {
-                    reviewHTML += `<li><strong>Question:</strong> ${item.question}<br><strong>Your Answer:</strong> ${item.yourAnswer}<br><strong>Correct Answer:</strong> ${item.correctAnswer}</li>`;
-                });
-                reviewHTML += `</ul>`;
-                incorrectAnswersList.innerHTML = reviewHTML;
-            }
-
-            resultContainer.style.display = 'flex';
-            document.getElementById('quiz-container').style.display = 'none';
-            document.body.style.backgroundImage = "url('result-background.jpg')";  // Final background image
-        }
-
-        function restartQuiz() {
-            currentQuestion = 0;
-            correctAnswers = 0;
-            incorrectAnswers = 0;
-            reviewIncorrect = [];
-            document.getElementById('result-container').style.display = 'none';
-            document.getElementById('welcome-screen').style.display = 'block';
-            document.body.style.backgroundImage = "none";  // Remove background image for result screen
+        function generatePDF() {
+            const resumeContent = document.getElementById('resumeOutput').innerHTML;
+            const pdf = new jsPDF();
+            pdf.fromHTML(resumeContent, 10, 10);
+            pdf.save('resume.pdf');
         }
     </script>
+
+    <!-- Include jsPDF library for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </body>
 </html>
