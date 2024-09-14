@@ -81,76 +81,86 @@
             border: none;
             color: #333;
         }
-        /* Spectacles Animation Styles */
-        #spectacles-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
+        /* Animation styles */
+        .animation-container {
+            position: relative;
             width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 2000;
+            height: 500px;
+            background: #f0f0f0;
+            overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-direction: column;
-            opacity: 1;
-            transition: opacity 1s ease-in-out;
         }
-        #spectacles {
-            width: 300px;
-            height: 150px;
-            position: relative;
-            perspective: 1000px;
-        }
-        .lens {
+        .spectacle {
             position: absolute;
-            width: 100px;
+            width: 200px;
             height: 100px;
+            background: transparent;
             border-radius: 50%;
-            background: #555;
+            border: 10px solid;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
             transform-style: preserve-3d;
-            transition: transform 2s ease-in-out;
+            animation: rotate 15s infinite linear;
         }
-        .lens.left {
-            left: 20%;
-            transform: rotateY(0deg);
-        }
-        .lens.right {
-            right: 20%;
-            transform: rotateY(0deg);
-        }
-        .bridge {
+        .spectacle:before, .spectacle:after {
+            content: "";
             position: absolute;
-            width: 60px;
-            height: 20px;
-            background: #555;
-            top: 50%;
-            left: 50%;
-            transform: translateX(-50%) translateY(-50%);
-            transition: opacity 1s ease-in-out;
+            border: 10px solid;
+            border-radius: 50%;
+            background: transparent;
         }
-        .info {
+        .spectacle:before {
+            width: 200px;
+            height: 200px;
+            border-color: #ff0000;
+            transform: rotateY(0deg) translateZ(100px);
+        }
+        .spectacle:after {
+            width: 200px;
+            height: 200px;
+            border-color: #00ff00;
+            transform: rotateY(90deg) translateZ(100px);
+        }
+        .spectacle:nth-child(2):before {
+            border-color: #0000ff;
+        }
+        .spectacle:nth-child(3):before {
+            border-color: #ff00ff;
+        }
+        .spectacle:nth-child(2):after {
+            border-color: #ffff00;
+        }
+        .spectacle:nth-child(3):after {
+            border-color: #00ffff;
+        }
+        @keyframes rotate {
+            from {
+                transform: rotateY(0deg);
+            }
+            to {
+                transform: rotateY(360deg);
+            }
+        }
+        .logo-price {
             position: absolute;
-            bottom: 20px;
             text-align: center;
-            color: white;
-            font-size: 24px;
-            opacity: 0;
-            transition: opacity 1s ease-in-out;
+            color: #333;
+            display: none;
         }
-        .logo {
-            font-size: 32px;
+        .logo-price img {
+            width: 100px;
+        }
+        .logo-price p {
+            font-size: 24px;
             font-weight: bold;
         }
-        .price {
-            font-size: 28px;
-            margin-top: 10px;
+        .fade-out {
+            animation: fadeOut 5s forwards;
         }
-        /* Hide the animation after it completes */
-        #spectacles-animation.hidden {
-            opacity: 0;
-            pointer-events: none;
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
         }
     </style>
 </head>
@@ -177,7 +187,6 @@
         </ul>
     </div>
 </nav>
-
     <!-- Sidebar Menu -->
     <div id="sidebar-menu" class="sidebar-menu">
         <button id="close-sidebar" class="close-sidebar">&times;</button>
@@ -284,6 +293,17 @@
         </div>
     </div>
 
+    <!-- Spectacle Animation -->
+    <div class="animation-container">
+        <div class="spectacle"></div>
+        <div class="spectacle"></div>
+        <div class="spectacle"></div>
+        <div class="logo-price">
+            <img src="images/logo.png" alt="Logo">
+            <p>$199.99</p>
+        </div>
+    </div>
+
     <!-- Contact Us on WhatsApp -->
     <a href="https://wa.me/9307473375" class="contact-btn" target="_blank">
         <i class="fab fa-whatsapp"></i>
@@ -297,19 +317,6 @@
             <p>All rights reserved &copy; 2024 JB Optician</p>
         </div>
     </footer>
-
-    <!-- Spectacles Animation -->
-    <div id="spectacles-animation">
-        <div id="spectacles">
-            <div class="lens left"></div>
-            <div class="lens right"></div>
-            <div class="bridge"></div>
-        </div>
-        <div class="info">
-            <div class="logo">JB Optician</div>
-            <div class="price">$199.99</div>
-        </div>
-    </div>
 
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -330,21 +337,24 @@
             }
         });
 
-        // Show animation on page load
-        window.addEventListener('load', () => {
-            const animation = document.getElementById('spectacles-animation');
-            setTimeout(() => {
-                document.querySelector('#spectacles .lens').style.transform = 'rotateY(360deg)';
-                document.querySelector('#spectacles .bridge').style.opacity = '0';
-                document.querySelector('#spectacles .info').style.opacity = '1';
-                setTimeout(() => {
-                    animation.classList.add('hidden');
-                    setTimeout(() => {
-                        animation.style.display = 'none';
-                        window.location.href = 'index.html'; // Redirect to home page
-                    }, 1000); // Match this with transition time
-                }, 5000); // Duration to show the animation
-            }, 500); // Delay to start the animation
+        // Animation logic
+        window.addEventListener('load', function() {
+            const logoPrice = document.querySelector('.logo-price');
+            const spectacle = document.querySelectorAll('.spectacle');
+            let animationDone = false;
+
+            setTimeout(function() {
+                logoPrice.style.display = 'block';
+                logoPrice.classList.add('fade-out');
+                setTimeout(function() {
+                    window.location.href = 'index.html';
+                }, 5000);
+            }, 7000); // Start animation after 7 seconds
+
+            // Animation for spectacles
+            spectacle.forEach((el, index) => {
+                el.style.animationDelay = `${index * 2}s`;
+            });
         });
     </script>
 </body>
