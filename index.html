@@ -45,6 +45,7 @@
             font-size: 24px;
             color: #333;
         }
+
         /* Sidebar styles */
         .sidebar-menu {
             display: none; /* Hidden by default */
@@ -81,30 +82,79 @@
             border: none;
             color: #333;
         }
-        
-        /* Animation container */
-        #spectacle-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
+
+        /* Spectacle Animation Section */
+        .spectacle-animation-container {
+            position: relative;
             width: 100%;
-            height: 100%;
-            background-color: black;
-            z-index: 9999;
+            height: 500px;
+            background: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 40px;
         }
 
-        #spectacle-animation canvas {
-            display: block;
-            width: 100%;
-            height: 100%;
+        .logo-price {
+            text-align: center;
+            margin-bottom: 20px;
         }
 
-        .hidden {
-            display: none;
+        .logo-price .logo {
+            width: 150px;
         }
+
+        .logo-price h3 {
+            font-size: 24px;
+            color: #333;
+            margin-top: 10px;
+        }
+
+        .spectacle-rotation {
+            position: relative;
+            width: 300px;
+            height: 300px;
+        }
+
+        .spectacle {
+            width: 100px;
+            height: 40px;
+            border: 5px solid;
+            border-radius: 50%;
+            position: absolute;
+            animation: rotate 5s infinite linear;
+            transform-origin: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .color1 {
+            border-color: #ff6347; /* Tomato */
+        }
+
+        .color2 {
+            border-color: #4682b4; /* Steel Blue */
+            animation-delay: 1s;
+        }
+
+        .color3 {
+            border-color: #32cd32; /* Lime Green */
+            animation-delay: 2s;
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg) translateX(120px);
+            }
+            100% {
+                transform: rotate(360deg) translateX(120px);
+            }
+        }
+
     </style>
 </head>
 <body>
+
  <!-- Navigation Bar -->
  <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="index.html">
@@ -141,17 +191,27 @@
         </ul>
     </div>
 
-    <!-- 3D Spectacle Animation -->
-    <div id="spectacle-animation"></div>
-
     <!-- Home Page Content -->
     <div class="container mt-4">
+        <!-- Spectacle Animation Section -->
+        <div class="spectacle-animation-container">
+            <div class="logo-price">
+                <img src="images/logo.png" alt="JB Optician Logo" class="logo">
+                <h3>Starting from ₹2000/-</h3>
+            </div>
+            <div class="spectacle-rotation">
+                <div class="spectacle color1"></div>
+                <div class="spectacle color2"></div>
+                <div class="spectacle color3"></div>
+            </div>
+        </div>
+
         <div class="text-center">
             <h1>Welcome to JB Optician</h1>
             <p>Find your perfect eyewear with ease</p>
             <a href="shop.html" class="btn btn-primary">Shop Now</a>
         </div>
-        
+
         <!-- Offers Slider -->
         <div class="mt-4">
             <h2>Special Offers</h2>
@@ -183,43 +243,29 @@
                     <div class="card">
                         <img src="images/product1.jpg" class="card-img-top" alt="Product 1">
                         <div class="card-body">
-                            <h5 class="card-title">Product 1</h5>
-                            <p class="card-text">$99.99</p>
-                            <a href="product.html?id=1" class="btn btn-primary">View Details</a>
+                            <h5 class="card-title">Stylish Glasses</h5>
+                            <p class="card-text">₹3000</p>
+                            <a href="#" class="btn btn-primary">Add to Cart</a>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <!-- Why Choose Us -->
-        <div class="mt-4">
-            <h2>Why Choose Us?</h2>
-            <div class="row">
-                <div class="col-md-3">
-                    <div class="card text-center">
+                <div class="col-md-4 product-card">
+                    <div class="card">
+                        <img src="images/product2.jpg" class="card-img-top" alt="Product 2">
                         <div class="card-body">
-                            <i class="fas fa-cogs fa-3x"></i>
-                            <h5 class="card-title">High Quality</h5>
-                            <p class="card-text">Our products are made with the highest quality materials.</p>
+                            <h5 class="card-title">Sleek Shades</h5>
+                            <p class="card-text">₹4500</p>
+                            <a href="#" class="btn btn-primary">Add to Cart</a>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <div class="card text-center">
+                <div class="col-md-4 product-card">
+                    <div class="card">
+                        <img src="images/product3.jpg" class="card-img-top" alt="Product 3">
                         <div class="card-body">
-                            <i class="fas fa-truck fa-3x"></i>
-                            <h5 class="card-title">Free Shipping</h5>
-                            <p class="card-text">Enjoy free shipping on all orders.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <i class="fas fa-headset fa-3x"></i>
-                            <h5 class="card-title">24/7 Support</h5>
-                            <p class="card-text">We're here to help you anytime, day or night.</p>
+                            <h5 class="card-title">Retro Specs</h5>
+                            <p class="card-text">₹3500</p>
+                            <a href="#" class="btn btn-primary">Add to Cart</a>
                         </div>
                     </div>
                 </div>
@@ -227,87 +273,36 @@
         </div>
     </div>
 
-    <!-- WhatsApp Contact Button -->
-    <a href="https://wa.me/1234567890" class="contact-btn" target="_blank"><i class="fab fa-whatsapp"></i></a>
+    <!-- Contact Button -->
+    <a href="contact.html" class="contact-btn">
+        <i class="fas fa-phone-alt"></i>
+    </a>
 
     <!-- Footer -->
-    <footer class="footer mt-4">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <p>&copy; 2024 JB Optician. All rights reserved.</p>
-                </div>
-                <div class="col-md-6">
-                    <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
-                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-                </div>
-            </div>
+    <footer class="footer">
+        <p>&copy; 2023 JB Optician. All rights reserved.</p>
+        <div class="social-links">
+            <a href="https://facebook.com" class="social-icon"><i class="fab fa-facebook"></i></a>
+            <a href="https://instagram.com" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="https://twitter.com" class="social-icon"><i class="fab fa-twitter"></i></a>
         </div>
     </footer>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <script>
-        // Sidebar Toggle
-        document.getElementById("menu-toggle").addEventListener("click", function() {
-            document.getElementById("sidebar-menu").style.display = "block";
+        $(document).ready(function () {
+            $('#menu-toggle').click(function () {
+                $('#sidebar-menu').toggle();
+            });
+
+            $('#close-sidebar').click(function () {
+                $('#sidebar-menu').hide();
+            });
         });
-
-        document.getElementById("close-sidebar").addEventListener("click", function() {
-            document.getElementById("sidebar-menu").style.display = "none";
-        });
-
-        // Preload Animation with Three.js
-        let scene, camera, renderer, spectacle;
-        function init() {
-            // Create a Scene
-            scene = new THREE.Scene();
-            scene.background = new THREE.Color(0x000000);  // Black background
-
-            // Set up Camera
-            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            camera.position.z = 5;
-
-            // Set up Renderer
-            renderer = new THREE.WebGLRenderer({ antialias: true });
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            document.getElementById('spectacle-animation').appendChild(renderer.domElement);
-
-            // Load 3D Spectacle Model
-            const geometry = new THREE.BoxGeometry(2, 1, 0.5);  // For example, replace with your spectacle model
-            const material = new THREE.MeshBasicMaterial({ color: 0xffffff });
-            spectacle = new THREE.Mesh(geometry, material);
-            scene.add(spectacle);
-
-            // Lighting
-            const light = new THREE.DirectionalLight(0xffffff, 1);
-            light.position.set(1, 1, 1).normalize();
-            scene.add(light);
-
-            animate();
-        }
-
-        // Animation Loop
-        function animate() {
-            requestAnimationFrame(animate);
-
-            // Rotate Spectacles
-            spectacle.rotation.x += 0.01;
-            spectacle.rotation.y += 0.01;
-
-            renderer.render(scene, camera);
-        }
-
-        // Hide the animation and load the homepage after 4 seconds
-        setTimeout(function() {
-            document.getElementById('spectacle-animation').classList.add('hidden');
-        }, 4000);
-
-        // Initialize the 3D Animation
-        init();
     </script>
+
 </body>
 </html>
