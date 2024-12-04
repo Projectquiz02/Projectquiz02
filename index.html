@@ -3,176 +3,199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aditya Pagariya - Professional Portfolio</title>
+    <title>Aditya Pagariya - Portfolio</title>
     <style>
-        /* General Reset and Body */
-        body {
+        * {
             margin: 0;
-            font-family: 'Arial', sans-serif;
-            line-height: 1.6;
-            scroll-behavior: smooth;
-            background-color: #f9f9f9;
-            color: #333;
-        }
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-        ul {
-            list-style: none;
             padding: 0;
+            box-sizing: border-box;
         }
 
-        /* Header */
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            background-color: #f0f2f5;
+        }
+
+        h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
+        }
+
+        /* Header Section */
         header {
             background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
             color: white;
             text-align: center;
             padding: 80px 20px;
         }
+
         header h1 {
-            font-size: 3em;
-            margin: 0;
+            font-size: 3.5em;
+            margin-bottom: 10px;
         }
+
         header p {
-            font-size: 1.2em;
-            margin: 10px 0;
+            font-size: 1.5em;
+            margin-bottom: 20px;
         }
-        header .btn-primary {
-            margin-top: 20px;
-            display: inline-block;
+
+        header .btn {
+            padding: 15px 30px;
             background: #ff5e57;
             color: white;
-            padding: 15px 30px;
-            border-radius: 50px;
             font-weight: bold;
-            transition: 0.3s ease-in-out;
+            border-radius: 50px;
+            transition: background 0.3s ease;
+            display: inline-block;
         }
-        header .btn-primary:hover {
+
+        header .btn:hover {
             background: #ff3a2f;
         }
 
-        /* Sections */
+        /* Section Containers */
         section {
             padding: 50px 20px;
+            margin: 20px auto;
+            max-width: 1100px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        h2 {
+
+        .section-header {
             text-align: center;
-            margin-bottom: 30px;
-            font-size: 2em;
-            color: #203a43;
-            position: relative;
-        }
-        h2::after {
-            content: '';
-            width: 100px;
-            height: 3px;
-            background: #ff5e57;
-            display: block;
-            margin: 10px auto;
+            margin-bottom: 20px;
         }
 
         /* About Section */
         #about {
             display: flex;
             flex-wrap: wrap;
+            justify-content: center;
             align-items: center;
-            gap: 40px;
+            gap: 20px;
         }
+
         #about img {
             width: 300px;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
+
+        #about div {
+            flex: 1;
+            min-width: 300px;
+        }
+
         #about p {
             font-size: 1.2em;
-            line-height: 1.8;
             color: #555;
+            line-height: 1.8;
         }
 
         /* Skills Section */
-        #skills {
-            background: #203a43;
-            color: white;
+        #skills .skill {
+            margin: 20px 0;
         }
-        .skills-list {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
+
+        #skills .skill h4 {
+            margin-bottom: 10px;
+            color: #34495e;
         }
-        .skills-list .skill {
-            background: #2c5364;
-            padding: 15px 20px;
+
+        #skills .skill-bar {
+            background: #ecf0f1;
             border-radius: 5px;
-            font-size: 1em;
-            transition: transform 0.3s ease, background 0.3s ease;
+            overflow: hidden;
+            height: 20px;
         }
-        .skills-list .skill:hover {
-            transform: scale(1.1);
-            background: #ff5e57;
+
+        #skills .skill-bar div {
+            height: 100%;
+            text-align: right;
+            padding-right: 10px;
+            color: white;
+            font-weight: bold;
         }
 
         /* Experience Section */
-        #experience ul {
-            line-height: 2;
-            font-size: 1.1em;
+        #experience .job {
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        #experience h4 {
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+
+        #experience p {
+            color: #7f8c8d;
+        }
+
+        #experience img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
         }
 
         /* Contact Section */
         #contact form {
-            max-width: 600px;
-            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
+
         #contact input, #contact textarea, #contact button {
-            width: 100%;
             padding: 15px;
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
+            font-size: 1em;
             border-radius: 5px;
+            border: 1px solid #ddd;
         }
+
         #contact button {
-            background: #203a43;
+            background: #3498db;
             color: white;
             border: none;
             cursor: pointer;
             transition: background 0.3s ease;
         }
+
         #contact button:hover {
-            background: #2c5364;
+            background: #2980b9;
         }
 
         /* Footer */
         footer {
-            background: #0f2027;
-            color: white;
             text-align: center;
-            padding: 20px 0;
+            padding: 20px;
+            background: #2c3e50;
+            color: white;
         }
 
-        /* Media Queries for Mobile Responsiveness */
+        /* Media Queries */
         @media (max-width: 768px) {
+            #about {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            #about img {
+                width: 250px;
+            }
+
             header h1 {
                 font-size: 2.5em;
             }
+
             header p {
-                font-size: 1em;
-            }
-            #about {
-                flex-direction: column;
-                text-align: center;
-            }
-            #about img {
-                width: 100%;
-                max-width: 250px;
-            }
-            #about p {
-                font-size: 1em;
+                font-size: 1.2em;
             }
         }
 
@@ -180,93 +203,126 @@
             header h1 {
                 font-size: 2em;
             }
+
             header p {
-                font-size: 0.9em;
-            }
-            header .btn-primary {
-                padding: 10px 20px;
-                font-size: 0.9em;
+                font-size: 1em;
             }
         }
     </style>
 </head>
 <body>
+
+    <!-- Header Section -->
     <header>
         <h1>Aditya Pagariya</h1>
         <p>Innovative Thinker | Problem Solver | Aspiring Tech Professional</p>
-        <a href="#contact" class="btn-primary">Get In Touch</a>
+        <a href="#contact" class="btn">Get In Touch</a>
     </header>
 
+    <!-- About Section -->
     <section id="about">
-        <div class="container">
-            <img src="https://via.placeholder.com/300" alt="Aditya Pagariya">
-            <div>
-                <h2>About Me</h2>
-                <p>
-                    I am Aditya Pagariya, a dedicated and ambitious professional with a passion for problem-solving, innovation, and technology. 
-                    My journey has been driven by a commitment to learning and delivering impactful solutions. I excel in teamwork, thrive under challenges, 
-                    and strive for excellence in every endeavor.
-                </p>
-            </div>
+        <div>
+            <h2>About Me</h2>
+            <p>I am Aditya Pagariya, a passionate technologist specializing in full-stack development, cloud computing, and problem-solving. With a strong foundation in both front-end and back-end technologies, I aim to build efficient and user-friendly solutions.</p>
         </div>
+        <img src="your-photo.jpg" alt="Aditya Pagariya">
     </section>
 
+    <!-- Skills Section -->
     <section id="skills">
-        <div class="container">
-            <h2>Skills</h2>
-            <div class="skills-list">
-                <div class="skill">HTML</div>
-                <div class="skill">CSS</div>
-                <div class="skill">JavaScript</div>
-                <div class="skill">Problem Solving</div>
-                <div class="skill">Team Collaboration</div>
+        <h2>Skills</h2>
+        <div class="skill">
+            <h4>Cloud Computing</h4>
+            <div class="skill-bar">
+                <div style="width: 80%; background: #3498db;">80%</div>
+            </div>
+        </div>
+        <div class="skill">
+            <h4>Big Data</h4>
+            <div class="skill-bar">
+                <div style="width: 70%; background: #e67e22;">70%</div>
+            </div>
+        </div>
+        <div class="skill">
+            <h4>Programming</h4>
+            <div class="skill-bar">
+                <div style="width: 90%; background: #2ecc71;">90%</div>
+            </div>
+        </div>
+        <div class="skill">
+            <h4>HTML & CSS</h4>
+            <div class="skill-bar">
+                <div style="width: 95%; background: #e74c3c;">95%</div>
+            </div>
+        </div>
+        <div class="skill">
+            <h4>JavaScript</h4>
+            <div class="skill-bar">
+                <div style="width: 85%; background: #3498db;">85%</div>
+            </div>
+        </div>
+        <div class="skill">
+            <h4>PHP</h4>
+            <div class="skill-bar">
+                <div style="width: 75%; background: #9b59b6;">75%</div>
+            </div>
+        </div>
+        <div class="skill">
+            <h4>MySQL</h4>
+            <div class="skill-bar">
+                <div style="width: 80%; background: #f39c12;">80%</div>
+            </div>
+        </div>
+        <div class="skill">
+            <h4>Web Development</h4>
+            <div class="skill-bar">
+                <div style="width: 90%; background: #16a085;">90%</div>
+            </div>
+        </div>
+        <div class="skill">
+            <h4>Java</h4>
+            <div class="skill-bar">
+                <div style="width: 85%; background: #2980b9;">85%</div>
             </div>
         </div>
     </section>
 
+    <!-- Experience Section -->
     <section id="experience">
-        <div class="container">
-            <h2>Experience</h2>
-            <ul>
-                <li>Developed interactive web pages with modern technologies like HTML, CSS, and JavaScript.</li>
-                <li>Collaborated on team projects to enhance user experiences.</li>
-                <li>Built solutions for real-world challenges through self-initiated projects.</li>
-                <li>Learn more about my experience on <a href="mailto:adityapagariya19@gmail.com">LinkedIn</a>.</li>
-            </ul>
+        <h2>Experience</h2>
+        <div class="job">
+            <img src="redo-group-logo.png" alt="Redo Group Logo">
+            <div>
+                <h4>Summer Intern at Redo Group</h4>
+                <p><strong>Duration:</strong> June 2023 - August 2023</p>
+                <p><strong>Responsibilities:</strong></p>
+                <ul>
+                    <li>Collaborated with senior developers to build and maintain web applications.</li>
+                    <li>Worked on front-end design and improved UI/UX for various client projects.</li>
+                    <li>Assisted in back-end development with PHP and MySQL for dynamic website features.</li>
+                    <li>Optimized existing web applications for better performance and scalability.</li>
+                    <li>Developed and deployed cloud-based solutions for improved infrastructure.</li>
+                    <li>Worked in an Agile environment to deliver projects on time.</li>
+                </ul>
+            </div>
         </div>
     </section>
 
+    <!-- Contact Section -->
     <section id="contact">
-        <div class="container">
-            <h2>Contact Me</h2>
-            <p>Email: <a href="mailto:adityapagariya19@gmail.com">adityapagariya19@gmail.com</a></p>
-            <form>
-                <input type="text" id="name" placeholder="Your Name" required>
-                <input type="email" id="email" placeholder="Your Email" required>
-                <textarea id="message" placeholder="Your Message" rows="5" required></textarea>
-                <button type="submit">Send Message</button>
-            </form>
-        </div>
+        <h2>Contact</h2>
+        <form action="mailto:your-email@example.com" method="POST" enctype="text/plain">
+            <input type="text" name="name" placeholder="Your Name" required>
+            <input type="email" name="email" placeholder="Your Email" required>
+            <textarea name="message" rows="4" placeholder="Your Message" required></textarea>
+            <button type="submit">Send Message</button>
+        </form>
     </section>
 
+    <!-- Footer -->
     <footer>
-        <p>&copy; 2024 Aditya Pagariya. All rights reserved.</p>
+        <p>&copy; 2024 Aditya Pagariya. All Rights Reserved.</p>
     </footer>
 
-    <script>
-        // Smooth Scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
-            });
-        });
-
-        // Form Submission Alert
-        document.querySelector('form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Thank you for reaching out! I will get back to you soon.');
-        });
-    </script>
 </body>
 </html>
