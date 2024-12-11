@@ -5,18 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>JB Optition Chatbot</title>
   <style>
-    /* General Styles */
     body {
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
+      background-color: #f4f7f9;
     }
 
     /* Chatbot Button */
     #chatbot-button {
       position: fixed;
-      bottom: 20px;
-      right: 20px;
+      bottom: 30px;
+      right: 30px;
       width: 60px;
       height: 60px;
       background-color: #0078d7;
@@ -29,25 +29,31 @@
       cursor: pointer;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
       z-index: 1000;
+      transition: all 0.3s ease;
     }
 
-    /* Chatbot Container */
+    #chatbot-button:hover {
+      transform: scale(1.1);
+    }
+
+    /* Chatbot Window */
     #chatbot {
       position: fixed;
-      bottom: 90px;
-      right: 20px;
+      bottom: 100px;
+      right: 30px;
       width: 100%;
       max-width: 400px;
       height: 500px;
-      background: white;
-      border: 1px solid #ccc;
+      background-color: white;
       border-radius: 10px;
       display: none;
       flex-direction: column;
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
       z-index: 1000;
+      animation: slideIn 0.5s ease-in-out;
     }
 
+    /* Header */
     #chatbot-header {
       background-color: #0078d7;
       color: white;
@@ -60,37 +66,11 @@
       align-items: center;
     }
 
+    /* Chatbot Body */
     #chatbot-body {
       flex: 1;
       padding: 10px;
       overflow-y: auto;
-    }
-
-    #chatbot-input-container {
-      display: flex;
-      padding: 10px;
-      border-top: 1px solid #ccc;
-      gap: 5px;
-    }
-
-    #chatbot-input {
-      flex: 1;
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-
-    #chatbot-send {
-      background-color: #0078d7;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      padding: 8px 15px;
-      cursor: pointer;
-    }
-
-    /* Chat Messages */
-    #chatbot-messages {
       display: flex;
       flex-direction: column;
       gap: 10px;
@@ -118,19 +98,20 @@
     /* Dynamic Buttons */
     .dynamic-buttons {
       display: flex;
-      flex-wrap: wrap;
-      gap: 5px;
-      margin-top: 10px;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 15px;
     }
 
     .dynamic-button {
       background-color: #0078d7;
       color: white;
       border: none;
-      padding: 5px 10px;
+      padding: 10px;
       border-radius: 5px;
       font-size: 14px;
       cursor: pointer;
+      transition: background-color 0.3s ease;
     }
 
     .dynamic-button:hover {
@@ -142,29 +123,63 @@
       display: none;
       flex-direction: column;
       gap: 10px;
-      margin-top: 10px;
+      margin-top: 15px;
     }
 
     #appointment-form input {
-      padding: 8px;
+      padding: 12px;
       border: 1px solid #ccc;
       border-radius: 5px;
+      font-size: 14px;
     }
 
     #appointment-form button {
-      padding: 10px;
+      padding: 12px;
       background-color: #0078d7;
       color: white;
       border: none;
       border-radius: 5px;
       cursor: pointer;
+      font-size: 16px;
+    }
+
+    #appointment-form button:hover {
+      background-color: #005bb5;
+    }
+
+    /* Slide-in Animation */
+    @keyframes slideIn {
+      from {
+        transform: translateY(100%);
+      }
+      to {
+        transform: translateY(0);
+      }
+    }
+
+    /* Mobile Responsiveness */
+    @media (max-width: 600px) {
+      #chatbot {
+        width: 90%;
+        max-width: none;
+      }
+
+      .dynamic-button {
+        font-size: 12px;
+      }
+
+      #appointment-form input, #appointment-form button {
+        font-size: 14px;
+      }
     }
   </style>
 </head>
 <body>
 
+<!-- Chatbot Button -->
 <div id="chatbot-button" onclick="toggleChatbot()">💬</div>
 
+<!-- Chatbot Window -->
 <div id="chatbot">
   <div id="chatbot-header">
     JB Optition Assistant
@@ -188,17 +203,19 @@
 </div>
 
 <script>
+  // Toggle Chatbot visibility
   function toggleChatbot() {
     const chatbot = document.getElementById("chatbot");
     chatbot.style.display = chatbot.style.display === "flex" ? "none" : "flex";
   }
 
+  // Handle option click
   function handleOption(option) {
     const messages = document.getElementById("chatbot-messages");
     const buttons = document.getElementById("dynamic-buttons");
     const form = document.getElementById("appointment-form");
 
-    // Clear buttons for dynamic flow
+    // Clear current buttons
     buttons.style.display = "none";
 
     // Append user message
@@ -207,7 +224,7 @@
     userMessage.textContent = option;
     messages.appendChild(userMessage);
 
-    // Show bot response
+    // Bot response based on option
     const botMessage = document.createElement("div");
     botMessage.className = "message bot-message";
 
@@ -231,6 +248,7 @@
     messages.appendChild(botMessage);
   }
 
+  // Handle store selection for appointment
   function selectStore(store) {
     const messages = document.getElementById("chatbot-messages");
     const buttons = document.getElementById("dynamic-buttons");
@@ -250,6 +268,7 @@
     form.style.display = "flex";
   }
 
+  // Submit appointment form after validation
   function submitAppointment() {
     const name = document.getElementById("user-name").value;
     const phone = document.getElementById("user-phone").value;
