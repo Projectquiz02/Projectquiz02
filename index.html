@@ -38,7 +38,7 @@
       right: 20px;
       width: 100%;
       max-width: 400px;
-      max-height: 600px;
+      height: 500px;
       background: white;
       border: 1px solid #ccc;
       border-radius: 10px;
@@ -115,37 +115,15 @@
       color: #333;
     }
 
-    /* Fallback Form */
-    #fallback-form {
-      display: none;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    #fallback-form input {
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-
-    #fallback-form button {
-      padding: 10px;
-      background-color: #0078d7;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    /* Quick Buttons */
-    .quick-buttons {
+    /* Dynamic Buttons */
+    .dynamic-buttons {
       display: flex;
       flex-wrap: wrap;
       gap: 5px;
       margin-top: 10px;
     }
 
-    .quick-button {
+    .dynamic-button {
       background-color: #0078d7;
       color: white;
       border: none;
@@ -155,8 +133,31 @@
       cursor: pointer;
     }
 
-    .quick-button:hover {
+    .dynamic-button:hover {
       background-color: #005bb5;
+    }
+
+    /* Appointment Form */
+    #appointment-form {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    #appointment-form input {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    #appointment-form button {
+      padding: 10px;
+      background-color: #0078d7;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -171,21 +172,18 @@
   </div>
   <div id="chatbot-body">
     <div id="chatbot-messages"></div>
-    <div class="quick-buttons">
-      <button class="quick-button" onclick="quickReply('What are your store hours?')">Store Hours</button>
-      <button class="quick-button" onclick="quickReply('Do you provide eye tests?')">Eye Tests</button>
-      <button class="quick-button" onclick="quickReply('How can I book an appointment?')">Book Appointment</button>
-      <button class="quick-button" onclick="quickReply('What is your return policy?')">Return Policy</button>
+    <div id="dynamic-buttons" class="dynamic-buttons">
+      <button class="dynamic-button" onclick="handleOption('Store Hours')">Store Hours</button>
+      <button class="dynamic-button" onclick="handleOption('Eye Tests')">Eye Tests</button>
+      <button class="dynamic-button" onclick="handleOption('Book Appointment')">Book Appointment</button>
+      <button class="dynamic-button" onclick="handleOption('Return Policy')">Return Policy</button>
     </div>
-    <div id="fallback-form">
-      <input type="text" id="user-whatsapp" placeholder="Enter your WhatsApp number">
-      <input type="email" id="user-email" placeholder="Enter your Email">
-      <button onclick="submitForm()">Submit</button>
+    <div id="appointment-form">
+      <input type="text" id="user-name" placeholder="Enter your name">
+      <input type="text" id="user-phone" placeholder="Enter your phone number">
+      <input type="email" id="user-email" placeholder="Enter your email">
+      <button onclick="submitAppointment()">Submit Appointment</button>
     </div>
-  </div>
-  <div id="chatbot-input-container">
-    <input type="text" id="chatbot-input" placeholder="Type your query...">
-    <button id="chatbot-send" onclick="sendMessage()">Send</button>
   </div>
 </div>
 
@@ -195,69 +193,73 @@
     chatbot.style.display = chatbot.style.display === "flex" ? "none" : "flex";
   }
 
-  function quickReply(message) {
-    document.getElementById("chatbot-input").value = message;
-    sendMessage();
-  }
-
-  function sendMessage() {
-    const inputField = document.getElementById("chatbot-input");
-    const message = inputField.value.trim();
-
-    if (!message) return;
-
-    addMessage(message, "user-message");
-    inputField.value = "";
-
-    setTimeout(() => {
-      const response = getChatbotResponse(message);
-      addMessage(response.message, "bot-message");
-
-      if (response.showForm) {
-        document.getElementById("fallback-form").style.display = "flex";
-      }
-    }, 500);
-  }
-
-  function addMessage(content, className) {
+  function handleOption(option) {
     const messages = document.getElementById("chatbot-messages");
-    const messageElement = document.createElement("div");
-    messageElement.className = `message ${className}`;
-    messageElement.textContent = content;
-    messages.appendChild(messageElement);
-    messages.scrollTop = messages.scrollHeight;
-  }
+    const buttons = document.getElementById("dynamic-buttons");
+    const form = document.getElementById("appointment-form");
 
-  function getChatbotResponse(message) {
-    const responses = {
-      "what are your store hours?": "Our stores are open from 10 AM to 8 PM every day.",
-      "do you provide eye tests?": "Yes, we offer professional eye tests. Contact us to schedule.",
-      "how can i book an appointment?": "Please let us know which store you'd like to book an appointment at.",
-      "what is your return policy?": "You can return products within 30 days of purchase with proof."
-    };
+    // Clear buttons for dynamic flow
+    buttons.style.display = "none";
 
-    const normalizedMessage = message.toLowerCase();
-    const response = responses[normalizedMessage];
+    // Append user message
+    const userMessage = document.createElement("div");
+    userMessage.className = "message user-message";
+    userMessage.textContent = option;
+    messages.appendChild(userMessage);
 
-    if (response) {
-      return { message: response, showForm: false };
+    // Show bot response
+    const botMessage = document.createElement("div");
+    botMessage.className = "message bot-message";
+
+    if (option === "Book Appointment") {
+      botMessage.textContent = "Which store would you like to book an appointment for?";
+      const storeButtons = `
+        <button class="dynamic-button" onclick="selectStore('Store 1')">Store 1</button>
+        <button class="dynamic-button" onclick="selectStore('Store 2')">Store 2</button>
+      `;
+      buttons.innerHTML = storeButtons;
+      buttons.style.display = "flex";
     } else {
-      return {
-        message: "I couldn't find an answer to that. Please provide your WhatsApp number and email so we can assist you further.",
-        showForm: true
+      const responses = {
+        "Store Hours": "Our stores are open from 10 AM to 8 PM every day.",
+        "Eye Tests": "Yes, we offer professional eye tests. Contact us to schedule.",
+        "Return Policy": "You can return products within 30 days of purchase with proof.",
       };
+      botMessage.textContent = responses[option];
     }
+
+    messages.appendChild(botMessage);
   }
 
-  function submitForm() {
-    const whatsapp = document.getElementById("user-whatsapp").value;
+  function selectStore(store) {
+    const messages = document.getElementById("chatbot-messages");
+    const buttons = document.getElementById("dynamic-buttons");
+    const form = document.getElementById("appointment-form");
+
+    const userMessage = document.createElement("div");
+    userMessage.className = "message user-message";
+    userMessage.textContent = store;
+    messages.appendChild(userMessage);
+
+    const botMessage = document.createElement("div");
+    botMessage.className = "message bot-message";
+    botMessage.textContent = "Please fill out the form to complete your appointment booking.";
+    messages.appendChild(botMessage);
+
+    buttons.style.display = "none";
+    form.style.display = "flex";
+  }
+
+  function submitAppointment() {
+    const name = document.getElementById("user-name").value;
+    const phone = document.getElementById("user-phone").value;
     const email = document.getElementById("user-email").value;
 
-    if (whatsapp && email) {
-      alert(`Thank you! Our team will contact you at ${whatsapp} or ${email}.`);
-      document.getElementById("fallback-form").style.display = "none";
+    if (name && phone && email) {
+      alert("Appointment submitted successfully!");
+      document.getElementById("appointment-form").style.display = "none";
     } else {
-      alert("Please fill in both fields.");
+      alert("Please fill out all fields.");
     }
   }
 </script>
