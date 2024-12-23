@@ -3,285 +3,241 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>JB Optition Chatbot</title>
+  <title>Roomify: Visualize Furniture</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
+    /* General Reset */
+    * {
       margin: 0;
       padding: 0;
-      background-color: #f4f7f9;
+      box-sizing: border-box;
     }
 
-    /* Chatbot Button */
-    #chatbot-button {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      width: 60px;
-      height: 60px;
-      background-color: #0078d7;
-      border-radius: 50%;
+    body {
+      font-family: "Arial", sans-serif;
+      background: linear-gradient(135deg, #eceff1, #90caf9);
       display: flex;
       justify-content: center;
       align-items: center;
-      color: white;
-      font-size: 28px;
-      cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-      z-index: 1000;
-      transition: all 0.3s ease;
+      height: 100vh;
+      overflow: hidden;
     }
 
-    #chatbot-button:hover {
-      transform: scale(1.1);
-    }
-
-    /* Chatbot Window */
-    #chatbot {
-      position: fixed;
-      bottom: 100px;
-      right: 30px;
-      width: 100%;
-      max-width: 400px;
-      height: 500px;
-      background-color: white;
+    .container {
+      width: 95%;
+      max-width: 1200px;
+      background: #ffffff;
       border-radius: 10px;
-      display: none;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+      display: flex;
       flex-direction: column;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-      z-index: 1000;
-      animation: slideIn 0.5s ease-in-out;
+      gap: 15px;
+      padding: 20px;
     }
 
-    /* Header */
-    #chatbot-header {
-      background-color: #0078d7;
+    header {
+      background: linear-gradient(135deg, #42a5f5, #1e88e5);
       color: white;
-      padding: 15px;
-      font-size: 18px;
-      border-top-left-radius: 10px;
-      border-top-right-radius: 10px;
+      text-align: center;
+      padding: 15px 0;
+      border-radius: 8px;
+    }
+
+    header h1 {
+      font-size: 1.8rem;
+      margin-bottom: 5px;
+    }
+
+    header p {
+      font-size: 1rem;
+    }
+
+    .controls {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
     }
 
-    /* Chatbot Body */
-    #chatbot-body {
-      flex: 1;
-      padding: 10px;
-      overflow-y: auto;
+    .controls div {
       display: flex;
-      flex-direction: column;
       gap: 10px;
     }
 
-    .message {
-      padding: 10px;
+    .controls button {
+      padding: 10px 15px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+      background: #42a5f5;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .controls button:hover {
+      background: #1e88e5;
+    }
+
+    .room {
+      width: 100%;
+      height: 500px;
+      background: url('https://via.placeholder.com/800x500?text=Room') no-repeat center center / cover;
+      position: relative;
+      border: 2px solid #ddd;
       border-radius: 10px;
-      max-width: 80%;
-      word-wrap: break-word;
+      margin-bottom: 15px;
+      overflow: hidden;
     }
 
-    .user-message {
-      align-self: flex-end;
-      background-color: #0078d7;
-      color: white;
+    .furniture {
+      position: absolute;
+      cursor: grab;
+      transition: transform 0.2s, opacity 0.2s, box-shadow 0.3s;
     }
 
-    .bot-message {
-      align-self: flex-start;
-      background-color: #f1f1f1;
-      color: #333;
+    .furniture img {
+      width: 100px;
+      height: auto;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
     }
 
-    /* Dynamic Buttons */
-    .dynamic-buttons {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 15px;
+    .furniture:active {
+      cursor: grabbing;
     }
 
-    .dynamic-button {
-      background-color: #0078d7;
-      color: white;
-      border: none;
+    footer {
+      text-align: center;
       padding: 10px;
-      border-radius: 5px;
-      font-size: 14px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
+      font-size: 0.85rem;
+      background: #eceff1;
+      border-radius: 8px;
     }
 
-    .dynamic-button:hover {
-      background-color: #005bb5;
-    }
-
-    /* Appointment Form */
-    #appointment-form {
-      display: none;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 15px;
-    }
-
-    #appointment-form input {
-      padding: 12px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 14px;
-    }
-
-    #appointment-form button {
-      padding: 12px;
-      background-color: #0078d7;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 16px;
-    }
-
-    #appointment-form button:hover {
-      background-color: #005bb5;
-    }
-
-    /* Slide-in Animation */
-    @keyframes slideIn {
-      from {
-        transform: translateY(100%);
-      }
-      to {
-        transform: translateY(0);
-      }
-    }
-
-    /* Mobile Responsiveness */
-    @media (max-width: 600px) {
-      #chatbot {
-        width: 90%;
-        max-width: none;
+    @media screen and (max-width: 768px) {
+      .controls {
+        flex-direction: column;
+        align-items: center;
       }
 
-      .dynamic-button {
-        font-size: 12px;
+      .room {
+        height: 400px;
       }
 
-      #appointment-form input, #appointment-form button {
-        font-size: 14px;
+      .furniture img {
+        width: 80px;
       }
     }
   </style>
 </head>
 <body>
+  <div class="container">
+    <header>
+      <h1>Roomify: Visualize Furniture in Your Space</h1>
+      <p>Drag, drop, resize, and design your room!</p>
+    </header>
 
-<!-- Chatbot Button -->
-<div id="chatbot-button" onclick="toggleChatbot()">💬</div>
-
-<!-- Chatbot Window -->
-<div id="chatbot">
-  <div id="chatbot-header">
-    JB Optition Assistant
-    <button style="background: none; border: none; color: white; font-size: 18px;" onclick="toggleChatbot()">✖</button>
-  </div>
-  <div id="chatbot-body">
-    <div id="chatbot-messages"></div>
-    <div id="dynamic-buttons" class="dynamic-buttons">
-      <button class="dynamic-button" onclick="handleOption('Store Hours')">Store Hours</button>
-      <button class="dynamic-button" onclick="handleOption('Eye Tests')">Eye Tests</button>
-      <button class="dynamic-button" onclick="handleOption('Book Appointment')">Book Appointment</button>
-      <button class="dynamic-button" onclick="handleOption('Return Policy')">Return Policy</button>
+    <div class="controls">
+      <div>
+        <button class="furniture-btn" data-item="chair">Add Chair</button>
+        <button class="furniture-btn" data-item="table">Add Table</button>
+        <button class="furniture-btn" data-item="sofa">Add Sofa</button>
+      </div>
+      <div>
+        <button id="save-btn">Save Layout</button>
+        <button id="reset-btn">Reset Room</button>
+      </div>
     </div>
-    <div id="appointment-form">
-      <input type="text" id="user-name" placeholder="Enter your name">
-      <input type="text" id="user-phone" placeholder="Enter your phone number">
-      <input type="email" id="user-email" placeholder="Enter your email">
-      <button onclick="submitAppointment()">Submit Appointment</button>
-    </div>
+
+    <div class="room" id="room"></div>
+
+    <footer>
+      Made with ❤️ by Roomify Team
+    </footer>
   </div>
-</div>
 
-<script>
-  // Toggle Chatbot visibility
-  function toggleChatbot() {
-    const chatbot = document.getElementById("chatbot");
-    chatbot.style.display = chatbot.style.display === "flex" ? "none" : "flex";
-  }
+  <script>
+    const room = document.getElementById('room');
+    const furnitureButtons = document.querySelectorAll('.furniture-btn');
+    const saveBtn = document.getElementById('save-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    let draggedItem = null;
 
-  // Handle option click
-  function handleOption(option) {
-    const messages = document.getElementById("chatbot-messages");
-    const buttons = document.getElementById("dynamic-buttons");
-    const form = document.getElementById("appointment-form");
+    const furnitureImages = {
+      chair: "https://via.placeholder.com/100?text=Chair",
+      table: "https://via.placeholder.com/100?text=Table",
+      sofa: "https://via.placeholder.com/100?text=Sofa",
+    };
 
-    // Clear current buttons
-    buttons.style.display = "none";
+    // Add furniture to the room
+    furnitureButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const furnitureType = button.getAttribute('data-item');
+        const furniture = document.createElement('div');
+        furniture.classList.add('furniture');
+        furniture.innerHTML = `<img src="${furnitureImages[furnitureType]}" alt="${furnitureType}">`;
+        furniture.style.top = "50%";
+        furniture.style.left = "50%";
+        room.appendChild(furniture);
 
-    // Append user message
-    const userMessage = document.createElement("div");
-    userMessage.className = "message user-message";
-    userMessage.textContent = option;
-    messages.appendChild(userMessage);
+        // Drag and Drop functionality
+        furniture.addEventListener('mousedown', (e) => {
+          draggedItem = furniture;
+          draggedItem.style.cursor = 'grabbing';
+        });
 
-    // Bot response based on option
-    const botMessage = document.createElement("div");
-    botMessage.className = "message bot-message";
+        document.addEventListener('mousemove', (e) => {
+          if (draggedItem) {
+            const rect = room.getBoundingClientRect();
+            draggedItem.style.top = `${e.clientY - rect.top - 50}px`;
+            draggedItem.style.left = `${e.clientX - rect.left - 50}px`;
+          }
+        });
 
-    if (option === "Book Appointment") {
-      botMessage.textContent = "Which store would you like to book an appointment for?";
-      const storeButtons = `
-        <button class="dynamic-button" onclick="selectStore('Store 1')">Store 1</button>
-        <button class="dynamic-button" onclick="selectStore('Store 2')">Store 2</button>
-      `;
-      buttons.innerHTML = storeButtons;
-      buttons.style.display = "flex";
-    } else {
-      const responses = {
-        "Store Hours": "Our stores are open from 10 AM to 8 PM every day.",
-        "Eye Tests": "Yes, we offer professional eye tests. Contact us to schedule.",
-        "Return Policy": "You can return products within 30 days of purchase with proof.",
-      };
-      botMessage.textContent = responses[option];
-    }
+        document.addEventListener('mouseup', () => {
+          if (draggedItem) draggedItem.style.cursor = 'grab';
+          draggedItem = null;
+        });
+      });
+    });
 
-    messages.appendChild(botMessage);
-  }
+    // Save room layout
+    saveBtn.addEventListener('click', () => {
+      const furnitureData = [];
+      document.querySelectorAll('.furniture').forEach(item => {
+        furnitureData.push({
+          type: item.querySelector('img').alt,
+          top: item.style.top,
+          left: item.style.left,
+        });
+      });
+      localStorage.setItem('roomLayout', JSON.stringify(furnitureData));
+      alert('Room layout saved!');
+    });
 
-  // Handle store selection for appointment
-  function selectStore(store) {
-    const messages = document.getElementById("chatbot-messages");
-    const buttons = document.getElementById("dynamic-buttons");
-    const form = document.getElementById("appointment-form");
+    // Load room layout
+    const loadRoomLayout = () => {
+      const savedLayout = JSON.parse(localStorage.getItem('roomLayout'));
+      if (savedLayout) {
+        savedLayout.forEach(item => {
+          const furniture = document.createElement('div');
+          furniture.classList.add('furniture');
+          furniture.innerHTML = `<img src="${furnitureImages[item.type]}" alt="${item.type}">`;
+          furniture.style.top = item.top;
+          furniture.style.left = item.left;
+          room.appendChild(furniture);
+        });
+      }
+    };
 
-    const userMessage = document.createElement("div");
-    userMessage.className = "message user-message";
-    userMessage.textContent = store;
-    messages.appendChild(userMessage);
+    // Reset the room
+    resetBtn.addEventListener('click', () => {
+      room.innerHTML = '';
+      localStorage.removeItem('roomLayout');
+    });
 
-    const botMessage = document.createElement("div");
-    botMessage.className = "message bot-message";
-    botMessage.textContent = "Please fill out the form to complete your appointment booking.";
-    messages.appendChild(botMessage);
-
-    buttons.style.display = "none";
-    form.style.display = "flex";
-  }
-
-  // Submit appointment form after validation
-  function submitAppointment() {
-    const name = document.getElementById("user-name").value;
-    const phone = document.getElementById("user-phone").value;
-    const email = document.getElementById("user-email").value;
-
-    if (name && phone && email) {
-      alert("Appointment submitted successfully!");
-      document.getElementById("appointment-form").style.display = "none";
-    } else {
-      alert("Please fill out all fields.");
-    }
-  }
-</script>
-
+    // Initialize
+    loadRoomLayout();
+  </script>
 </body>
 </html>
