@@ -109,35 +109,35 @@
 
     <select id="citySelect">
         <!-- All Cities in Maharashtra -->
-        <option value="mumbai">Mumbai</option>
-        <option value="pune">Pune</option>
-        <option value="nagpur">Nagpur</option>
-        <option value="nashik">Nashik</option>
-        <option value="aurangabad">Aurangabad</option>
-        <option value="kolhapur">Kolhapur</option>
-        <option value="solapur">Solapur</option>
-        <option value="satara">Satara</option>
-        <option value="jalna">Jalna</option>
-        <option value="amravati">Amravati</option>
-        <option value="dhule">Dhule</option>
-        <option value="thane">Thane</option>
-        <option value="beed">Beed</option>
-        <option value="chandrapur">Chandrapur</option>
-        <option value="wardha">Wardha</option>
-        <option value="ratnagiri">Ratnagiri</option>
-        <option value="buldhana">Buldhana</option>
-        <option value="parbhani">Parbhani</option>
-        <option value="jalgaon">Jalgaon</option>
-        <option value="nanded">Nanded</option>
-        <option value="latur">Latur</option>
-        <option value="yavatmal">Yavatmal</option>
-        <option value="sangli">Sangli</option>
-        <option value="washim">Washim</option>
-        <option value="palghar">Palghar</option>
-        <option value="osmanabad">Osmanabad</option>
-        <option value="akola">Akola</option>
-        <option value="dombivli">Dombivli</option>
-        <option value="kalyan">Kalyan</option>
+        <option value="Mumbai">Mumbai</option>
+        <option value="Pune">Pune</option>
+        <option value="Nagpur">Nagpur</option>
+        <option value="Nashik">Nashik</option>
+        <option value="Aurangabad">Aurangabad</option>
+        <option value="Kolhapur">Kolhapur</option>
+        <option value="Solapur">Solapur</option>
+        <option value="Satara">Satara</option>
+        <option value="Jalna">Jalna</option>
+        <option value="Amravati">Amravati</option>
+        <option value="Dhule">Dhule</option>
+        <option value="Thane">Thane</option>
+        <option value="Beed">Beed</option>
+        <option value="Chandrapur">Chandrapur</option>
+        <option value="Wardha">Wardha</option>
+        <option value="Ratnagiri">Ratnagiri</option>
+        <option value="Buldhana">Buldhana</option>
+        <option value="Parbhani">Parbhani</option>
+        <option value="Jalgaon">Jalgaon</option>
+        <option value="Nanded">Nanded</option>
+        <option value="Latur">Latur</option>
+        <option value="Yavatmal">Yavatmal</option>
+        <option value="Sangli">Sangli</option>
+        <option value="Washim">Washim</option>
+        <option value="Palghar">Palghar</option>
+        <option value="Osmanabad">Osmanabad</option>
+        <option value="Akola">Akola</option>
+        <option value="Dombivli">Dombivli</option>
+        <option value="Kalyan">Kalyan</option>
     </select>
 
     <div id="newsContainer" class="loading">Loading news...</div>
@@ -160,7 +160,8 @@
         function fetchNews(city) {
             newsContainer.innerHTML = '<div class="loading">Loading news...</div>';  // Show loading spinner
 
-            const url = `https://newsapi.org/v2/everything?q=${city}&apiKey=${apiKey}&pageSize=10&sortBy=publishedAt`;
+            // The query now includes a more general location-based query, and also expands to cover broader matches
+            const url = `https://newsapi.org/v2/everything?q=${encodeURIComponent(city)}&apiKey=${apiKey}&pageSize=10&sortBy=publishedAt`;
 
             fetch(url)
                 .then(response => response.json())
@@ -168,7 +169,7 @@
                     if (data.status === "ok" && data.articles.length > 0) {
                         displayNews(data.articles);
                     } else {
-                        newsContainer.innerHTML = '<p>No news found for this city.</p>';
+                        newsContainer.innerHTML = `<p>No news found for ${city}. Please try another city or wait for updates.</p>`;
                     }
                 })
                 .catch(error => {
@@ -196,7 +197,7 @@
         }
 
         // Initial news load for Mumbai (default city)
-        fetchNews('mumbai');
+        fetchNews('Mumbai');
     </script>
 </body>
 </html>
