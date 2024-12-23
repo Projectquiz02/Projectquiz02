@@ -10,9 +10,10 @@
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f9f9f9;
+            background-color: #f4f4f9;
             color: #333;
             line-height: 1.6;
         }
@@ -133,14 +134,10 @@
         <option value="sangli">Sangli</option>
         <option value="washim">Washim</option>
         <option value="palghar">Palghar</option>
-        <option value="ratnagiri">Ratnagiri</option>
         <option value="osmanabad">Osmanabad</option>
         <option value="akola">Akola</option>
-        <option value="amravati">Amravati</option>
         <option value="dombivli">Dombivli</option>
-        <option value="nagpur">Nagpur</option>
         <option value="kalyan">Kalyan</option>
-        <!-- Add more cities as needed -->
     </select>
 
     <div id="newsContainer" class="loading">Loading news...</div>
@@ -150,7 +147,7 @@
     </footer>
 
     <script>
-        const apiKey = 'bc527210c83445248ae503ee4a9c412c';  // News API Key
+        const apiKey = 'bc527210c83445248ae503ee4a9c412c';  // Your News API Key
         const newsContainer = document.getElementById('newsContainer');
 
         // Event listener for city selection
@@ -163,7 +160,7 @@
         function fetchNews(city) {
             newsContainer.innerHTML = '<div class="loading">Loading news...</div>';  // Show loading spinner
 
-            const url = `https://newsapi.org/v2/everything?q=${city}&apiKey=${apiKey}`;
+            const url = `https://newsapi.org/v2/everything?q=${city}&apiKey=${apiKey}&pageSize=10&sortBy=publishedAt`;
 
             fetch(url)
                 .then(response => response.json())
@@ -188,7 +185,7 @@
                 newsItem.classList.add('newsItem');
 
                 newsItem.innerHTML = `
-                    <img src="${article.urlToImage || 'https://via.placeholder.com/400x200'}" alt="news image">
+                    <img src="${article.urlToImage || 'https://via.placeholder.com/400x200?text=No+Image+Available'}" alt="News Image">
                     <h2>${article.title}</h2>
                     <p>${article.description || 'No description available.'}</p>
                     <a href="${article.url}" target="_blank">Read More</a>
