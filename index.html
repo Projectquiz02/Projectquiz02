@@ -1,269 +1,205 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Roomify 3D: Visualize Furniture in Your Space</title>
-  <style>
-    /* General Reset */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maha News 🗞️ - Latest News from Maharashtra</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+        }
 
-    body {
-      font-family: "Arial", sans-serif;
-      background: #f4f4f9;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      overflow: hidden;
-    }
+        header {
+            background-color: #003366;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 2.5em;
+        }
 
-    .container {
-      width: 100%;
-      max-width: 1200px;
-      background: #ffffff;
-      border-radius: 15px;
-      box-shadow: 0 10px 50px rgba(0, 0, 0, 0.1);
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
+        select {
+            font-size: 18px;
+            padding: 12px;
+            width: 90%;
+            max-width: 350px;
+            margin: 20px auto;
+            display: block;
+            background-color: #fff;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            transition: 0.3s ease;
+        }
 
-    header {
-      background: #1e88e5;
-      color: white;
-      text-align: center;
-      padding: 15px;
-      border-radius: 10px;
-    }
+        select:hover, select:focus {
+            border-color: #003366;
+            outline: none;
+        }
 
-    header h1 {
-      font-size: 2rem;
-      margin-bottom: 5px;
-    }
+        .newsItem {
+            background: #fff;
+            border-radius: 8px;
+            margin: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
 
-    header p {
-      font-size: 1.1rem;
-    }
+        .newsItem img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
 
-    .controls {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-    }
+        .newsItem h2 {
+            padding: 10px;
+            font-size: 1.2em;
+            color: #333;
+        }
 
-    .controls div {
-      display: flex;
-      gap: 15px;
-    }
+        .newsItem p {
+            padding: 0 10px 10px;
+            color: #555;
+            font-size: 1em;
+        }
 
-    .controls button {
-      padding: 10px 20px;
-      font-size: 1rem;
-      border: none;
-      border-radius: 10px;
-      background: #42a5f5;
-      color: white;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
+        .newsItem a {
+            padding: 10px;
+            text-align: center;
+            background-color: #003366;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            display: block;
+            border-radius: 5px;
+        }
 
-    .controls button:hover {
-      background: #1e88e5;
-    }
+        .newsItem a:hover {
+            background-color: #002244;
+        }
 
-    .controls select {
-      padding: 10px;
-      font-size: 1rem;
-      border-radius: 10px;
-      border: 2px solid #42a5f5;
-    }
+        footer {
+            background-color: #003366;
+            color: white;
+            text-align: center;
+            padding: 15px;
+        }
 
-    .room {
-      width: 100%;
-      height: 500px;
-      position: relative;
-      background: #ddd;
-      border-radius: 10px;
-      margin-bottom: 15px;
-      overflow: hidden;
-      transform: perspective(1500px);
-      transition: transform 0.5s ease;
-    }
+        .loading {
+            text-align: center;
+            font-size: 1.5em;
+            color: #003366;
+        }
 
-    .furniture {
-      position: absolute;
-      cursor: grab;
-      transition: all 0.3s ease;
-    }
-
-    .furniture img {
-      width: 100px;
-      height: auto;
-      border-radius: 8px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-      transition: transform 0.3s ease;
-    }
-
-    .furniture:active {
-      cursor: grabbing;
-    }
-
-    .furniture:hover {
-      transform: scale(1.05);
-    }
-
-    footer {
-      text-align: center;
-      padding: 10px;
-      font-size: 0.85rem;
-      background: #f0f0f0;
-      border-radius: 8px;
-    }
-
-    @media (max-width: 768px) {
-      .controls {
-        flex-direction: column;
-        align-items: center;
-      }
-      .room {
-        height: 400px;
-      }
-    }
-
-  </style>
+    </style>
 </head>
 <body>
-  <div class="container">
     <header>
-      <h1>Roomify 3D: Visualize Furniture in Your Space</h1>
-      <p>Drag and drop furniture into your room and design your dream space!</p>
+        Maha News 🗞️ - Latest News from Maharashtra
     </header>
 
-    <div class="controls">
-      <div>
-        <select id="furniture-category">
-          <option value="chairs">Chairs</option>
-          <option value="sofas">Sofas</option>
-          <option value="tables">Tables</option>
-        </select>
-        <button id="load-furniture-btn">Load Furniture</button>
-      </div>
-      <div>
-        <button id="save-btn">Save Layout</button>
-        <button id="reset-btn">Reset Room</button>
-      </div>
-    </div>
+    <select id="citySelect">
+        <!-- All Cities in Maharashtra -->
+        <option value="mumbai">Mumbai</option>
+        <option value="pune">Pune</option>
+        <option value="nagpur">Nagpur</option>
+        <option value="nashik">Nashik</option>
+        <option value="aurangabad">Aurangabad</option>
+        <option value="kolhapur">Kolhapur</option>
+        <option value="solapur">Solapur</option>
+        <option value="satara">Satara</option>
+        <option value="jalna">Jalna</option>
+        <option value="amravati">Amravati</option>
+        <option value="dhule">Dhule</option>
+        <option value="thane">Thane</option>
+        <option value="beed">Beed</option>
+        <option value="chandrapur">Chandrapur</option>
+        <option value="wardha">Wardha</option>
+        <option value="ratnagiri">Ratnagiri</option>
+        <option value="buldhana">Buldhana</option>
+        <option value="parbhani">Parbhani</option>
+        <option value="jalgaon">Jalgaon</option>
+        <option value="nanded">Nanded</option>
+        <option value="latur">Latur</option>
+        <option value="yavatmal">Yavatmal</option>
+        <option value="sangli">Sangli</option>
+        <option value="washim">Washim</option>
+        <option value="palghar">Palghar</option>
+        <option value="ratnagiri">Ratnagiri</option>
+        <option value="osmanabad">Osmanabad</option>
+        <option value="akola">Akola</option>
+        <option value="amravati">Amravati</option>
+        <option value="dombivli">Dombivli</option>
+        <option value="nagpur">Nagpur</option>
+        <option value="kalyan">Kalyan</option>
+        <!-- Add more cities as needed -->
+    </select>
 
-    <div class="room" id="room"></div>
+    <div id="newsContainer" class="loading">Loading news...</div>
 
     <footer>
-      Made with ❤️ by Roomify Team
+        Powered by Maha News 🗞️ | Stay Updated!
     </footer>
-  </div>
 
-  <script>
-    // Data for furniture images based on categories
-    const furnitureData = {
-      chairs: [
-        "https://via.placeholder.com/100x100?text=Chair1",
-        "https://via.placeholder.com/100x100?text=Chair2",
-        "https://via.placeholder.com/100x100?text=Chair3"
-      ],
-      sofas: [
-        "https://via.placeholder.com/100x100?text=Sofa1",
-        "https://via.placeholder.com/100x100?text=Sofa2",
-        "https://via.placeholder.com/100x100?text=Sofa3"
-      ],
-      tables: [
-        "https://via.placeholder.com/100x100?text=Table1",
-        "https://via.placeholder.com/100x100?text=Table2",
-        "https://via.placeholder.com/100x100?text=Table3"
-      ]
-    };
+    <script>
+        const apiKey = 'bc527210c83445248ae503ee4a9c412c';  // News API Key
+        const newsContainer = document.getElementById('newsContainer');
 
-    const room = document.getElementById('room');
-    const loadFurnitureBtn = document.getElementById('load-furniture-btn');
-    const resetBtn = document.getElementById('reset-btn');
-    const saveBtn = document.getElementById('save-btn');
-    const furnitureCategorySelect = document.getElementById('furniture-category');
-
-    // Function to load furniture based on selected category
-    loadFurnitureBtn.addEventListener('click', () => {
-      const category = furnitureCategorySelect.value;
-      const furnitureImages = furnitureData[category];
-      room.innerHTML = '';
-
-      furnitureImages.forEach(imgSrc => {
-        const furniture = document.createElement('div');
-        furniture.classList.add('furniture');
-        furniture.innerHTML = `<img src="${imgSrc}" alt="${category}">`;
-        furniture.style.top = `${Math.random() * 80 + 10}%`;
-        furniture.style.left = `${Math.random() * 80 + 10}%`;
-        room.appendChild(furniture);
-
-        // Dragging functionality
-        furniture.addEventListener('mousedown', (e) => {
-          let offsetX = e.clientX - furniture.offsetLeft;
-          let offsetY = e.clientY - furniture.offsetTop;
-
-          const onMouseMove = (moveEvent) => {
-            furniture.style.left = `${moveEvent.clientX - offsetX}px`;
-            furniture.style.top = `${moveEvent.clientY - offsetY}px`;
-          };
-
-          document.addEventListener('mousemove', onMouseMove);
-
-          document.addEventListener('mouseup', () => {
-            document.removeEventListener('mousemove', onMouseMove);
-          });
+        // Event listener for city selection
+        document.getElementById('citySelect').addEventListener('change', function() {
+            const city = this.value;
+            fetchNews(city);
         });
-      });
-    });
 
-    // Save the room layout to local storage
-    saveBtn.addEventListener('click', () => {
-      const furnitureData = [];
-      document.querySelectorAll('.furniture').forEach(furniture => {
-        furnitureData.push({
-          src: furniture.querySelector('img').src,
-          top: furniture.style.top,
-          left: furniture.style.left
-        });
-      });
-      localStorage.setItem('roomLayout', JSON.stringify(furnitureData));
-      alert('Room layout saved!');
-    });
+        // Function to fetch and display news based on city
+        function fetchNews(city) {
+            newsContainer.innerHTML = '<div class="loading">Loading news...</div>';  // Show loading spinner
 
-    // Load saved room layout
-    const loadSavedLayout = () => {
-      const savedLayout = JSON.parse(localStorage.getItem('roomLayout'));
-      if (savedLayout) {
-        savedLayout.forEach(item => {
-          const furniture = document.createElement('div');
-          furniture.classList.add('furniture');
-          furniture.innerHTML = `<img src="${item.src}" alt="Furniture">`;
-          furniture.style.top = item.top;
-          furniture.style.left = item.left;
-          room.appendChild(furniture);
-        });
-      }
-    };
+            const url = `https://newsapi.org/v2/everything?q=${city}&apiKey=${apiKey}`;
 
-    // Reset room
-    resetBtn.addEventListener('click', () => {
-      room.innerHTML = '';
-      localStorage.removeItem('roomLayout');
-    });
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "ok" && data.articles.length > 0) {
+                        displayNews(data.articles);
+                    } else {
+                        newsContainer.innerHTML = '<p>No news found for this city.</p>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching news:', error);
+                    newsContainer.innerHTML = '<p>Sorry, something went wrong. Please try again later.</p>';
+                });
+        }
 
-    // Load saved layout when the page is opened
-    loadSavedLayout();
-  </script>
+        // Function to display news articles
+        function displayNews(articles) {
+            newsContainer.innerHTML = '';  // Clear loading message
+            articles.forEach(article => {
+                const newsItem = document.createElement('div');
+                newsItem.classList.add('newsItem');
+
+                newsItem.innerHTML = `
+                    <img src="${article.urlToImage || 'https://via.placeholder.com/400x200'}" alt="news image">
+                    <h2>${article.title}</h2>
+                    <p>${article.description || 'No description available.'}</p>
+                    <a href="${article.url}" target="_blank">Read More</a>
+                `;
+
+                newsContainer.appendChild(newsItem);
+            });
+        }
+
+        // Initial news load for Mumbai (default city)
+        fetchNews('mumbai');
+    </script>
 </body>
 </html>
