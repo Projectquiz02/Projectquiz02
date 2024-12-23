@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Roomify: Visualize Furniture</title>
+  <title>Roomify 3D: Visualize Furniture in Your Space</title>
   <style>
     /* General Reset */
     * {
@@ -14,7 +14,7 @@
 
     body {
       font-family: "Arial", sans-serif;
-      background: linear-gradient(135deg, #eceff1, #90caf9);
+      background: #f4f4f9;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -23,33 +23,32 @@
     }
 
     .container {
-      width: 95%;
+      width: 100%;
       max-width: 1200px;
       background: #ffffff;
-      border-radius: 10px;
-      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-      overflow: hidden;
+      border-radius: 15px;
+      box-shadow: 0 10px 50px rgba(0, 0, 0, 0.1);
+      padding: 20px;
       display: flex;
       flex-direction: column;
-      gap: 15px;
-      padding: 20px;
+      gap: 20px;
     }
 
     header {
-      background: linear-gradient(135deg, #42a5f5, #1e88e5);
+      background: #1e88e5;
       color: white;
       text-align: center;
-      padding: 15px 0;
-      border-radius: 8px;
+      padding: 15px;
+      border-radius: 10px;
     }
 
     header h1 {
-      font-size: 1.8rem;
+      font-size: 2rem;
       margin-bottom: 5px;
     }
 
     header p {
-      font-size: 1rem;
+      font-size: 1.1rem;
     }
 
     .controls {
@@ -61,87 +60,100 @@
 
     .controls div {
       display: flex;
-      gap: 10px;
+      gap: 15px;
     }
 
     .controls button {
-      padding: 10px 15px;
+      padding: 10px 20px;
       font-size: 1rem;
       border: none;
-      border-radius: 5px;
+      border-radius: 10px;
       background: #42a5f5;
       color: white;
       cursor: pointer;
-      transition: all 0.3s;
+      transition: all 0.3s ease;
     }
 
     .controls button:hover {
       background: #1e88e5;
     }
 
+    .controls select {
+      padding: 10px;
+      font-size: 1rem;
+      border-radius: 10px;
+      border: 2px solid #42a5f5;
+    }
+
     .room {
       width: 100%;
       height: 500px;
-      background: url('https://via.placeholder.com/800x500?text=Room') no-repeat center center / cover;
       position: relative;
-      border: 2px solid #ddd;
+      background: #ddd;
       border-radius: 10px;
       margin-bottom: 15px;
       overflow: hidden;
+      transform: perspective(1500px);
+      transition: transform 0.5s ease;
     }
 
     .furniture {
       position: absolute;
       cursor: grab;
-      transition: transform 0.2s, opacity 0.2s, box-shadow 0.3s;
+      transition: all 0.3s ease;
     }
 
     .furniture img {
       width: 100px;
       height: auto;
-      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease;
     }
 
     .furniture:active {
       cursor: grabbing;
     }
 
+    .furniture:hover {
+      transform: scale(1.05);
+    }
+
     footer {
       text-align: center;
       padding: 10px;
       font-size: 0.85rem;
-      background: #eceff1;
+      background: #f0f0f0;
       border-radius: 8px;
     }
 
-    @media screen and (max-width: 768px) {
+    @media (max-width: 768px) {
       .controls {
         flex-direction: column;
         align-items: center;
       }
-
       .room {
         height: 400px;
       }
-
-      .furniture img {
-        width: 80px;
-      }
     }
+
   </style>
 </head>
 <body>
   <div class="container">
     <header>
-      <h1>Roomify: Visualize Furniture in Your Space</h1>
-      <p>Drag, drop, resize, and design your room!</p>
+      <h1>Roomify 3D: Visualize Furniture in Your Space</h1>
+      <p>Drag and drop furniture into your room and design your dream space!</p>
     </header>
 
     <div class="controls">
       <div>
-        <button class="furniture-btn" data-item="chair">Add Chair</button>
-        <button class="furniture-btn" data-item="table">Add Table</button>
-        <button class="furniture-btn" data-item="sofa">Add Sofa</button>
+        <select id="furniture-category">
+          <option value="chairs">Chairs</option>
+          <option value="sofas">Sofas</option>
+          <option value="tables">Tables</option>
+        </select>
+        <button id="load-furniture-btn">Load Furniture</button>
       </div>
       <div>
         <button id="save-btn">Save Layout</button>
@@ -157,72 +169,86 @@
   </div>
 
   <script>
-    const room = document.getElementById('room');
-    const furnitureButtons = document.querySelectorAll('.furniture-btn');
-    const saveBtn = document.getElementById('save-btn');
-    const resetBtn = document.getElementById('reset-btn');
-    let draggedItem = null;
-
-    const furnitureImages = {
-      chair: "https://via.placeholder.com/100?text=Chair",
-      table: "https://via.placeholder.com/100?text=Table",
-      sofa: "https://via.placeholder.com/100?text=Sofa",
+    // Data for furniture images based on categories
+    const furnitureData = {
+      chairs: [
+        "https://via.placeholder.com/100x100?text=Chair1",
+        "https://via.placeholder.com/100x100?text=Chair2",
+        "https://via.placeholder.com/100x100?text=Chair3"
+      ],
+      sofas: [
+        "https://via.placeholder.com/100x100?text=Sofa1",
+        "https://via.placeholder.com/100x100?text=Sofa2",
+        "https://via.placeholder.com/100x100?text=Sofa3"
+      ],
+      tables: [
+        "https://via.placeholder.com/100x100?text=Table1",
+        "https://via.placeholder.com/100x100?text=Table2",
+        "https://via.placeholder.com/100x100?text=Table3"
+      ]
     };
 
-    // Add furniture to the room
-    furnitureButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        const furnitureType = button.getAttribute('data-item');
+    const room = document.getElementById('room');
+    const loadFurnitureBtn = document.getElementById('load-furniture-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const saveBtn = document.getElementById('save-btn');
+    const furnitureCategorySelect = document.getElementById('furniture-category');
+
+    // Function to load furniture based on selected category
+    loadFurnitureBtn.addEventListener('click', () => {
+      const category = furnitureCategorySelect.value;
+      const furnitureImages = furnitureData[category];
+      room.innerHTML = '';
+
+      furnitureImages.forEach(imgSrc => {
         const furniture = document.createElement('div');
         furniture.classList.add('furniture');
-        furniture.innerHTML = `<img src="${furnitureImages[furnitureType]}" alt="${furnitureType}">`;
-        furniture.style.top = "50%";
-        furniture.style.left = "50%";
+        furniture.innerHTML = `<img src="${imgSrc}" alt="${category}">`;
+        furniture.style.top = `${Math.random() * 80 + 10}%`;
+        furniture.style.left = `${Math.random() * 80 + 10}%`;
         room.appendChild(furniture);
 
-        // Drag and Drop functionality
+        // Dragging functionality
         furniture.addEventListener('mousedown', (e) => {
-          draggedItem = furniture;
-          draggedItem.style.cursor = 'grabbing';
-        });
+          let offsetX = e.clientX - furniture.offsetLeft;
+          let offsetY = e.clientY - furniture.offsetTop;
 
-        document.addEventListener('mousemove', (e) => {
-          if (draggedItem) {
-            const rect = room.getBoundingClientRect();
-            draggedItem.style.top = `${e.clientY - rect.top - 50}px`;
-            draggedItem.style.left = `${e.clientX - rect.left - 50}px`;
-          }
-        });
+          const onMouseMove = (moveEvent) => {
+            furniture.style.left = `${moveEvent.clientX - offsetX}px`;
+            furniture.style.top = `${moveEvent.clientY - offsetY}px`;
+          };
 
-        document.addEventListener('mouseup', () => {
-          if (draggedItem) draggedItem.style.cursor = 'grab';
-          draggedItem = null;
+          document.addEventListener('mousemove', onMouseMove);
+
+          document.addEventListener('mouseup', () => {
+            document.removeEventListener('mousemove', onMouseMove);
+          });
         });
       });
     });
 
-    // Save room layout
+    // Save the room layout to local storage
     saveBtn.addEventListener('click', () => {
       const furnitureData = [];
-      document.querySelectorAll('.furniture').forEach(item => {
+      document.querySelectorAll('.furniture').forEach(furniture => {
         furnitureData.push({
-          type: item.querySelector('img').alt,
-          top: item.style.top,
-          left: item.style.left,
+          src: furniture.querySelector('img').src,
+          top: furniture.style.top,
+          left: furniture.style.left
         });
       });
       localStorage.setItem('roomLayout', JSON.stringify(furnitureData));
       alert('Room layout saved!');
     });
 
-    // Load room layout
-    const loadRoomLayout = () => {
+    // Load saved room layout
+    const loadSavedLayout = () => {
       const savedLayout = JSON.parse(localStorage.getItem('roomLayout'));
       if (savedLayout) {
         savedLayout.forEach(item => {
           const furniture = document.createElement('div');
           furniture.classList.add('furniture');
-          furniture.innerHTML = `<img src="${furnitureImages[item.type]}" alt="${item.type}">`;
+          furniture.innerHTML = `<img src="${item.src}" alt="Furniture">`;
           furniture.style.top = item.top;
           furniture.style.left = item.left;
           room.appendChild(furniture);
@@ -230,14 +256,14 @@
       }
     };
 
-    // Reset the room
+    // Reset room
     resetBtn.addEventListener('click', () => {
       room.innerHTML = '';
       localStorage.removeItem('roomLayout');
     });
 
-    // Initialize
-    loadRoomLayout();
+    // Load saved layout when the page is opened
+    loadSavedLayout();
   </script>
 </body>
 </html>
